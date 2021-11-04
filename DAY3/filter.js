@@ -12,7 +12,7 @@
 const peoples = ["crong!@#", "honux5", "sarah#", "hea3d", "zello", "5lucas"];
 const filterWord = (word) => {
   const char = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
-  return char.test(word) ? true : false;
+  return char.test(word);
 };
 
 // 1. for/while
