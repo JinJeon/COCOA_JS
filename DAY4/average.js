@@ -26,9 +26,7 @@ const getAverage = (scoreArr) => {
 };
 
 const getAllAverage = (studentArr) => {
-  let averageArr = [];
-  studentArr.forEach((student) => averageArr.push(getAverage(student)));
-  return averageArr;
+  return studentArr.map((student) => getAverage(student));
 };
 
 console.log(getAllAverage(grades));
@@ -48,8 +46,8 @@ const getBestScore = (scoreArr) => {
 
 const getBestScoreAverage = (studentArr) => {
   let bestScoreArr = [];
-  studentArr.forEach((student) => {
-    bestScoreArr.push(getBestScore(student));
+  studentArr.forEach((scoreArr) => {
+    bestScoreArr.push(getBestScore(scoreArr));
   });
   return getAverage(bestScoreArr);
 };

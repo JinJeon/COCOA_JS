@@ -41,36 +41,37 @@ const data = {
 function getKeyByValue(obj, value) {
   return Object.keys(obj).find((key) => obj[key] === value);
 }
-console.log(getKeyByValue(data, 3));
 
-/*
-const filterNumber = (obj, arr) => {
-  Object.values(obj).forEach((element) => {
-    if (typeof element !== "number") {
-      filterNumber(element, arr);
-    }
-    arr.push(getKeyByValue(obj, element));
-  });
-};
-*************추가 수정 필요*****************
-*/
-
-// 필터링 함수
-const filter = (obj) => {
+// Object.values
+const filter1 = (obj) => {
   const numberArr = [];
-  // filterNumber(obj, numberArr);
   Object.values(obj).forEach((element) => {
     if (typeof element === "number") {
       numberArr.push(getKeyByValue(obj, element));
+    } else if (typeof element === "object") {
+      Object.values(element).forEach((element2) => {
+        if (typeof element2 === "number") {
+          numberArr.push(getKeyByValue(element, element2));
+        }
+      });
     }
-    Object.values(element).forEach((element2) => {
-      if (typeof element2 === "number") {
-        numberArr.push(getKeyByValue(element, element2));
-      }
-    });
   });
   return numberArr;
 };
 
-console.log(filter(data));
+console.log(filter1(data));
 // ["debug", "width", "width", "hOffset", "hOffset", "size", "hOffset", "vOffset"];
+
+// for in
+const filter2 = (obj) => {
+  let numberArr = [];
+  for (const key in obj) {
+    if (typeof obj[key] === "number") {
+      numberArr.push(obj[key]);
+    } else if (typeof obj[key] === "object") {
+      filter2(obj[key]);
+    }
+  }
+  return numberArr;
+};
+filter2(data);
