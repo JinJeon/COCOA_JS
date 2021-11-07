@@ -26,9 +26,6 @@ const data = {
     onMouseUp: "sun1.opacity = (sun1.opacity / 100) * 90;",
   },
 };
-// 숫자타입으로만 구성된 요소를 뽑아 배열만들기
-// 실행결과
-// ["width", "height", "hOffset", "vOffset", "size", "hOffset", "vOffset"]
 
 //======================================================================================================
 // 순서
@@ -37,41 +34,31 @@ const data = {
 //  => 아닐경우 위 과정을 한 번 더 반복
 //======================================================================================================
 
-// key를 value로 바꾸는 함수
-function getKeyByValue(obj, value) {
-  return Object.keys(obj).find((key) => obj[key] === value);
-}
-
-// Object.values
-const filter1 = (obj) => {
-  const numberArr = [];
-  Object.values(obj).forEach((element) => {
-    if (typeof element === "number") {
-      numberArr.push(getKeyByValue(obj, element));
-    } else if (typeof element === "object") {
-      Object.values(element).forEach((element2) => {
-        if (typeof element2 === "number") {
-          numberArr.push(getKeyByValue(element, element2));
-        }
-      });
-    }
-  });
-  return numberArr;
-};
-
-console.log(filter1(data));
 // ["debug", "width", "width", "hOffset", "hOffset", "size", "hOffset", "vOffset"];
 
-// for in
-const filter2 = (obj) => {
-  let numberArr = [];
-  for (const key in obj) {
-    if (typeof obj[key] === "number") {
-      numberArr.push(obj[key]);
-    } else if (typeof obj[key] === "object") {
-      filter2(obj[key]);
-    }
-  }
-  return numberArr;
+const filterNumber = (obj) => {
+  return Object.keys(obj).filter((key) => typeof obj[key] === "number");
 };
-filter2(data);
+
+const filterObj = (obj) => {
+  let filteredArr = [];
+  const filterResult = (object) => {
+    filteredArr = filteredArr.concat(filterNumber(object));
+    if (Object.values(object).some((value) => typeof value === "object")) {
+      Object.values(object).forEach((value) => filterResult(value));
+    }
+    return filteredArr;
+  };
+  return filterResult(obj);
+};
+console.log(filterObj(data));
+// [
+//   "debug",
+//   "width",
+//   "height",
+//   "hOffset",
+//   "vOffset",
+//   "size",
+//   "hOffset",
+//   "vOffset",
+// ];
