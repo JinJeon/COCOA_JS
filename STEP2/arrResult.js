@@ -16,6 +16,7 @@ const filterSK = (array) => {
   const filterType = (arr) => {
     arr.forEach((element) => {
       if (typeof element === "object") {
+        // if 하나로 줄이기 필요
         if (element.type === "sk") {
           resultArr.push(element.name);
         }
