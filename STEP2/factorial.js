@@ -6,19 +6,8 @@ const factorial = (number) => {
   }
   return result;
 };
-// const calculator = (number) => {
-//   let arr = [];
-//   let resultArr = [];
-//   for (i = 1; i <= number; i++) {
-//     arr.push(i);
-//   }
-//   arr.forEach((element) => {
-//     resultArr.push(factorial(element));
-//   });
-//   return resultArr;
-// };
 const calculator = (number) => {
-  let arr = [];
+  const arr = [];
   for (i = 1; i <= number; i++) {
     arr.push(i);
   }
