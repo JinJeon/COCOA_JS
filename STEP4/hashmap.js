@@ -5,12 +5,6 @@ const hasher = (data) => {
   return result;
 };
 
-// class hashBooks {
-//   constructor(key, value) {
-//     this.key = String(key);
-//     this.value = String(value);
-//   }
-// }
 class hashBooksMake {
   constructor(volume) {
     this.books = new Array();
@@ -28,13 +22,10 @@ class hashBooksMake {
     if (!this.books[number][`${key}`]) {
       return console.log(`NOT ALLOWED : ${key}`);
     }
-    this.books.splice(number, 1);
-    return true;
+    return (this.books[number] = {});
   };
   containsKey = (key) => {
     const number = hasher(key);
-    console.log(number);
-    console.log(this.books[number]);
     if (this.books[number] === undefined) {
       return false;
     }
@@ -42,7 +33,8 @@ class hashBooksMake {
   };
   get = (key) => {
     const number = hasher(key);
-    if (!this.books[number][key]) {
+    console.log(this.books[number[key]]);
+    if (this.books[number][key] === undefined) {
       return undefined;
     }
     return this.books[number][key];
@@ -71,7 +63,3 @@ class hashBooksMake {
   };
 }
 let book = new hashBooksMake();
-
-book.put(1, 2);
-book.put("afadsfas", 5);
-console.log(book.books);
