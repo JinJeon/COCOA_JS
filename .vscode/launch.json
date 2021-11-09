@@ -6,6 +6,15 @@
   "configurations": [
     {
       "name": "Launch Program",
+      "program": "${workspaceFolder}/STEP4/doubleHashmap.js",
+      "request": "launch",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "pwa-node"
+    },
+    {
+      "name": "Launch Program",
       "program": "${workspaceFolder}/STEP3/hashmap.js",
       "request": "launch",
       "skipFiles": [

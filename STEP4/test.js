@@ -1,8 +1,7 @@
 const hasher = (data) => {
-  const dataArr = `${data}`.split("");
-  let number = 0;
-  dataArr.forEach((value) => (number = number + value.charCodeAt(0)));
-  const result = number % 50;
+  const asciiData = `${data}`.split("");
+  let result = 0;
+  asciiData.forEach((value) => (result = result + value.charCodeAt(0)));
   return result;
 };
 
@@ -13,18 +12,17 @@ function bookShelf() {
 bookShelf.prototype = {
   put: function (key, value) {
     const number = hasher(key);
-    if (typeof this.books[number] === "object") {
-      this.books[number][key] = String(value);
-    } else {
-      this.books[number] = { [key]: String(value) };
+    if (this.books[number]) {
+      this.books[number];
     }
+    this.books[number] = [[String(key), String(value)]];
   },
   remove: function (key) {
     const number = hasher(key);
     if (!this.containsKey(key)) {
       return `NOT ALLOWED : ${key}`;
     }
-    return (this.books[number][key] = {});
+    return (this.books[number] = {});
   },
   containsKey: function (key) {
     const number = hasher(key);
@@ -73,9 +71,10 @@ bookShelf.prototype = {
 let book = new bookShelf();
 
 book.put("A", "a");
-// book.put("B", "b");
-// book.put("BA", "d");
-// book.put("AB", "c");
-console.log(book.get("BA"));
+book.put("B", "b");
+book.put("AB", "c");
+book.put("BA", "d");
 
 console.log(book);
+console.log(book.containsKey("A"));
+console.log(book.replace("E"));
