@@ -7,7 +7,7 @@
 
     {
       "name": "Launch Program",
-      "program": "${workspaceFolder}/STEP5/tester.js",
+      "program": "${workspaceFolder}/STEP5/test.js",
       "request": "launch",
       "skipFiles": [
         "<node_internals>/**"
