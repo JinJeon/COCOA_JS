@@ -1,5 +1,4 @@
 // 저장 공간으로 객체를 사용하고, 이중 해싱으로 충돌을 해결
-
 const hasher = (data) => {
   const dataArr = `${data}`.split("");
   let number = 3;
@@ -13,47 +12,48 @@ function bookShelf() {
 }
 
 bookShelf.prototype = {
-  indexIs: function (key, value) {
-    const number = hasher(key);
-    if (typeof this.books[number] !== "object") {
-      return number;
-    } else {
-      return this.indexIs(hasher(key), value);
-    }
+  indexIs: function (key) {
+    const getIndex = (key) => {
+      if (
+        typeof this.books[hasher(key)] !== "object" ||
+        key === Object.keys(this.books[hasher(key)])[0]
+      ) {
+        return hasher(key);
+      } else {
+        return getIndex(hasher(key));
+      }
+    };
+    return getIndex(key);
   },
   put: function (key, value) {
     const realKey = key;
-    const search = (key, value) => {
-      const number = this.indexIs(key, value);
-      if (number) {
-        this.books[number] = { [realKey]: String(value) };
-      } else {
-        console.log("NO VACANCY");
-      }
-    };
-    search(key, value);
+    const number = this.indexIs(key);
+    if (number) {
+      this.books[number] = { [realKey]: String(value) };
+    } else {
+      console.log("NO VACANCY");
+    }
   },
   remove: function (key) {
-    const number = hasher(key);
     if (!this.containsKey(key)) {
       return `NOT ALLOWED : ${key}`;
     }
-    // if(this.books[number].key === )
-    return (this.books[number][key] = {});
+    const number = this.indexIs(key);
+    console.log(number);
+    console.log(this.books[number]);
+    this.books[number] = {};
   },
   containsKey: function (key) {
-    const number = hasher(key);
-    if (this.books[number] === undefined) {
-      return false;
-    }
-    return this.books[number][key] ? true : false;
+    const number = this.indexIs(key);
+    return this.books[number] ? true : false;
+    // return boolean
   },
   get: function (key) {
-    const number = this.indexIs(key);
     if (!this.containsKey(key)) {
       return `NOT ALLOWED : ${key}`;
     }
-    if (this.books[number][key]) return this.books[number][key];
+    const number = this.indexIs(key);
+    return this.books[number];
   },
   isEmpty: function () {
     return this.books.filter((element) => element !== undefined).length === "0"
@@ -91,7 +91,6 @@ let book = new bookShelf();
 // book.put("B", "b");
 book.put("BA", "d");
 book.put("AB", "c");
-// book.put("CD", "e");
-// book.put("DC", "f");
-
+console.log(book);
+console.log(book.containsKey("AB"));
 console.log(book);
