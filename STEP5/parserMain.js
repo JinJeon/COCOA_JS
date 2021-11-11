@@ -1,7 +1,8 @@
 const data1 = "[11,2,[398,4,[5,[6]]]]";
+const data5 = "[11,2,[398,4,[a,[6]]]]";
 const data2 = "[1,2,][3,4,[5,[6]]]";
 const data3 = "[1,2,[3,4,[5,[6]]]";
-const data4 = "[1,2,[3,4,,[5,[6]]]";
+const data4 = "[[1],2,[3,4,[5,[6]]]]";
 
 const run = function (data) {
   // data 글자별로 쪼개기
@@ -57,6 +58,7 @@ const run = function (data) {
     }
     traverse.push(newObj);
   };
+
   resultData.forEach((e) => {
     if (e === "[") {
       // type : "array"
@@ -86,6 +88,7 @@ run(data1);
 run(data2);
 run(data3);
 run(data4);
+run(data5);
 
 /* result
 [
