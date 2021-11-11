@@ -7,7 +7,7 @@
   5. 아닐 경우, key의 value에 2번 과정부터 반복
 */
 
-const JSON = require("./arrResult.json");
+const JSON = require("../DATA/arrResult.json");
 const A = [];
 console.log(A.length === 0);
 
