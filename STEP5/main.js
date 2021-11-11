@@ -1,4 +1,4 @@
-const data1 = "[11,2,[3,4,[5,[6]]]]";
+const data1 = "[11,2,[398,4,[5,[6]]]]";
 const data2 = "[1,2,][3,4,[5,[6]]]";
 const data3 = "[1,2,[3,4,[5,[6]]]";
 const data4 = "[1,2,[3,4,,[5,[6]]]";
@@ -37,13 +37,14 @@ const run = function (data) {
   };
 
   const resultData = dataSplit(data);
-  const filterArrLeft = resultData.filter((e) => e === "[");
-  const filterArrRight = resultData.filter((e) => e === "]");
+  const filterLeftArr = resultData.filter((e) => e === "[");
+  const filterRightArr = resultData.filter((e) => e === "]");
   const filterNumberArr = filterNumber(resultData);
 
-  // error 찾기
-  if (resultData.some((e) => e === "")) return console.log('"," 갯수 오류');
-  if (filterArrLeft.length !== filterArrRight.length)
+  // error filter
+  if (resultData.some((e) => e === ""))
+    return console.log("정수, [] 외 다른 값이 입력됨");
+  if (filterLeftArr.length !== filterRightArr.length)
     return console.log("괄호 갯수 불일치");
   if (isReverse(resultData)) return console.log("닫는 괄호가 앞섬");
 
@@ -75,7 +76,7 @@ const run = function (data) {
 
   // result
   console.log(
-    `배열 중첩 : ${filterArrRight.length}, 원소 개수 : ${filterNumberArr.length}`
+    `배열 중첩 : ${filterRightArr.length}, 원소 개수 : ${filterNumberArr.length}`
   );
   console.log(resultArr[0]);
   console.log(JSON.stringify(resultArr[0]));
