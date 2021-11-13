@@ -22,6 +22,7 @@ bookShelf.prototype = {
   // 정해진 순서에 따라 비어있는 공간의 index를 return
   indexIs: function (key) {
     let i = 0;
+    console.log(this);
     const getIndex = (key) => {
       if (
         typeof this.books[hasher(key, i)] !== "object" ||
@@ -29,6 +30,7 @@ bookShelf.prototype = {
         // object가 해당 index에 없거나
         // object가 해당 index에 있지만, key값이 일치할 때
       ) {
+        console.log(this);
         return hasher(key, i);
       }
       if (i > arraySize) {
@@ -100,5 +102,9 @@ let book = new bookShelf();
 
 // book.put("A", "a");
 // book.put("B", "b");
-book.put("BA", "d");
+book.put("AB", "d");
+console.log(book.books);
 book.put("AB", "c");
+book.remove("BA");
+console.log(book.books);
+console.log(book.get("AB"));
