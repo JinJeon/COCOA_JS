@@ -21,7 +21,7 @@ const percentage = function (arr, min, max) {
   const SB = Math.round(Math.sqrt(variance));
   const minValue = (min - mean) / SB;
   const maxValue = (max - mean) / SB;
-  return [minValue.toFixed(2), maxValue.toFixed(2)];
+  return [minValue.toFixed(2), maxValue.toFixed(2)]; // [ '-0.98', '0.27' ]
 };
 console.log(percentage(scoreArr, 70, 80));
 
