@@ -4,6 +4,7 @@ const hashingIndex = function (number) {
 };
 
 class linear {
+  // 선형
   constructor() {
     this.table = [];
   }
@@ -14,6 +15,7 @@ class linear {
       let i = 1;
       console.log(this);
       if (this.table[index] === undefined) {
+        // this가 내부에서 작동하지 않음??
         this.table[index] = value;
       } else {
         i = i + 1;
@@ -28,6 +30,7 @@ class linear {
 }
 
 class quadratic {
+  // 제곱
   constructor() {
     this.table = [];
   }
