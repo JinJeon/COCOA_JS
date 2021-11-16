@@ -1,6 +1,6 @@
 const data = require("../DATA/normalDistribution");
-const normalDistribution = data.normalDistribution;
-const normalDistributionValue = function (num) {
+const normalD = data.normalDistribution;
+const normalDValue = function (num) {
   let number = num;
   if (isNaN(num) || num > 4.0) {
     return 0;
@@ -8,7 +8,8 @@ const normalDistributionValue = function (num) {
   if (num < 0) {
     number = Math.abs(num);
   }
-  return normalDistribution[number.substr(0, 3)][number.substr(3, 1)];
+  number = String(number);
+  return normalD[number.substr(0, 3)][number.substr(3, 1)];
 };
 class subject {
   constructor(name) {
@@ -28,21 +29,23 @@ class subject {
       : Math.round(Math.sqrt(variance));
     return result;
   }
-  percentage(min, max) {
+  getPercent(min, max) {
     const mean = this.getMean();
     const SB = this.getStandardDeviation();
     const minValue = ((min - mean) / SB).toFixed(2);
     const maxValue = ((max - mean) / SB).toFixed(2);
-    return (
-      normalDistributionValue(maxValue) - normalDistributionValue(minValue)
-    );
+    const minNDValue =
+      minValue > 0 ? normalDValue(minValue) : 1 - normalDValue(minValue);
+    const maxNDValue =
+      maxValue > 0 ? normalDValue(maxValue) : 1 - normalDValue(maxValue);
+    return Math.abs(maxNDValue - minNDValue).toFixed(2) * 100;
   }
   console() {
-    console.log(`${this.name}'s mean : ${this.getMean()}`);
-    console.log(
-      `${this.name}'s StandardDeviation : ${this.getStandardDeviation()}`
-    );
-    console.log(`SCORE 70-80 PERCENTAGE : ${this.percentage(70, 80)}`);
+    console.log(`
+    ${this.name}'s mean : ${this.getMean()}
+    ${this.name}'s StandardDeviation : ${this.getStandardDeviation()}
+    SCORE 70-80 PERCENTAGE : ${this.getPercent(70, 80)}
+    `);
   }
 }
 
