@@ -1,3 +1,15 @@
+const data = require("../DATA/normalDistribution");
+const normalDistribution = data.normalDistribution;
+const normalDistributionValue = function (num) {
+  let number = num;
+  if (isNaN(num) || num > 4.0) {
+    return 0;
+  }
+  if (num < 0) {
+    number = Math.abs(num);
+  }
+  return normalDistribution[number.substr(0, 3)][number.substr(3, 1)];
+};
 class subject {
   constructor(name) {
     this.name = name;
@@ -12,22 +24,25 @@ class subject {
       this.score.map((el) => (el - mean) ** 2).reduce((a, b) => a + b) /
       (this.score.length - 1);
     const result = isNaN(Math.round(Math.sqrt(variance)))
-      ? "점수 1개"
+      ? "ONE SCORE"
       : Math.round(Math.sqrt(variance));
     return result;
   }
   percentage(min, max) {
     const mean = this.getMean();
     const SB = this.getStandardDeviation();
-    const minValue = (min - mean) / SB;
-    const maxValue = (max - mean) / SB;
-    return [minValue.toFixed(2), maxValue.toFixed(2)];
+    const minValue = ((min - mean) / SB).toFixed(2);
+    const maxValue = ((max - mean) / SB).toFixed(2);
+    return (
+      normalDistributionValue(maxValue) - normalDistributionValue(minValue)
+    );
   }
   console() {
     console.log(`${this.name}'s mean : ${this.getMean()}`);
     console.log(
       `${this.name}'s StandardDeviation : ${this.getStandardDeviation()}`
     );
+    console.log(`SCORE 70-80 PERCENTAGE : ${this.percentage(70, 80)}`);
   }
 }
 
