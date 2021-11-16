@@ -1,16 +1,50 @@
+function quickSort(array, left = 0, right = array.length - 1) {
+  if (left >= right) {
+    return;
+  }
+  const mid = Math.floor((left + right) / 2);
+  const pivot = array[mid];
+  const partition = divide(array, left, right, pivot);
+  quickSort(array, left, partition - 1);
+  quickSort(array, partition, right);
+  function divide(array, left, right, pivot) {
+    while (left <= right) {
+      while (array[left] < pivot) {
+        left++;
+      }
+      while (array[right] > pivot) {
+        right--;
+      }
+      if (left <= right) {
+        let swap = array[left];
+        array[left] = array[right];
+        array[right] = swap;
+        left++;
+        right--;
+      }
+    }
+    return left;
+  }
+  return array;
+}
+
 const data = require("../DATA/normalDistribution");
 const normalD = data.normalDistribution;
 const normalDValue = function (num) {
   let number = num;
-  if (isNaN(num) || num > 4.0) {
+  if (isNaN(number) || number > 4.0) {
     return 0;
   }
-  if (num < 0) {
+  if (number === Infinity) {
+    return;
+  }
+  if (number < 0) {
     number = Math.abs(num);
   }
-  number = String(number);
+  number = String(number.toFixed(2));
   return normalD[number.substr(0, 3)][number.substr(3, 1)];
 };
+
 class subject {
   constructor(name) {
     this.name = name;
@@ -31,17 +65,21 @@ class subject {
   }
   getPercent(min, max) {
     const mean = this.getMean();
-    const SB = this.getStandardDeviation();
-    const minValue = ((min - mean) / SB).toFixed(2);
-    const maxValue = ((max - mean) / SB).toFixed(2);
+    const SD = this.getStandardDeviation();
+    if (SD === 0) {
+      return mean >= min && mean <= max ? 100 : 0;
+    }
+    const minValue = (min - mean) / SD;
+    const maxValue = (max - mean) / SD;
     const minNDValue =
       minValue > 0 ? normalDValue(minValue) : 1 - normalDValue(minValue);
     const maxNDValue =
       maxValue > 0 ? normalDValue(maxValue) : 1 - normalDValue(maxValue);
-    return Math.abs(maxNDValue - minNDValue).toFixed(2) * 100;
+    return (maxNDValue - minNDValue).toFixed(2) * 100;
   }
   console() {
     console.log(`
+    ${this.name}'s score : ${quickSort(this.score)}
     ${this.name}'s mean : ${this.getMean()}
     ${this.name}'s StandardDeviation : ${this.getStandardDeviation()}
     SCORE 70-80 PERCENTAGE : ${this.getPercent(70, 80)}
