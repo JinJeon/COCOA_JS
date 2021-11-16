@@ -95,9 +95,6 @@ const printExecutionSequence = () => {
 // getArea("circle", 1, 3);
 // printExecutionSequence();
 
-// =============================================
-// DAY1과 동일
-
 const readline = require("readline");
 const rl = readline.createInterface({
   input: process.stdin,
