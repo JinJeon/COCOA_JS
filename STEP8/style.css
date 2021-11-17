@@ -1,17 +1,80 @@
 @import "reset.css";
 body {
+  background-color: rgb(97, 124, 94);
+  color: rgb(228, 206, 135);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   text-align: center;
 }
 
 h1 {
+  color: rgb(97, 124, 94);
+  background-color: rgb(233, 210, 136);
   font-size: 50px;
   font-weight: 500;
-  text-align: center;
   margin: 50px;
+  padding: 10px;
+  border: solid;
+  border-radius: 10px;
+  border-color: rgb(218, 197, 129);
+}
+h2 {
+  font-size: 30px;
+  font-weight: 500;
+}
+.todo_form input {
+  all: unset;
+  margin: 10px;
+  border: solid;
+  border-color: rgb(218, 197, 129);
+  border-radius: 10px;
+  border-width: 5px;
+  padding: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  vertical-align: auto;
+}
+.todo_form input[type="text"] {
+  width: 225px;
+}
+.todo_form input[type="submit"] {
+  border: 0ch;
+  font-size: 30px;
+  font-weight: 800;
+  padding-left: 5px;
 }
 
+button {
+  border: 0;
+  font-size: 15px;
+  padding: 0%;
+}
 .delete {
   text-decoration: line-through;
+}
+.todo_list {
+  font-size: 15px;
+  max-width: 300px;
+  margin: auto;
+  margin-top: 10px;
+  padding: 5px;
+  border: solid;
+  border-radius: 10px;
+  border-color: rgb(236, 214, 139);
+  border-width: 5px;
+}
+.todo_list li {
+  position: relative;
+  margin: 10px;
+}
+.todo_list input[type="checkbox"] {
+  position: absolute;
+  right: 5px;
+}
+.todo_list svg {
+  position: absolute;
+  background-color: rgb(97, 124, 94);
+  color: rgb(218, 197, 129);
+  left: 5px;
+  bottom: 1px;
 }

@@ -3,14 +3,14 @@ const toDoInput = toDoForm.querySelector("input");
 const toDoList = document.getElementById("todo-list");
 
 const deleteToDo = function (event) {
-  const targetLi = event.target.parentElement.parentElement;
+  console.log(event.target);
+  const targetLi =
+    event.target.parentElement.parentElement.parentElement.parentElement;
   targetLi.remove();
 };
 
 const checkToDo = function (event) {
   const targetBox = event.target.parentElement.parentElement;
-  console.log(event);
-  console.log(targetBox);
   targetBox.classList.toggle("delete");
 };
 
@@ -22,11 +22,13 @@ const makeToDo = function () {
   const checkBox = document.createElement("input");
   checkBox.setAttribute("type", "checkbox");
   const removeBtn = document.createElement("button");
+  removeBtn.innerHTML = '<i class="fas fa-trash"></i>';
 
   listSpan.appendChild(checkBox);
   listSpan.appendChild(removeBtn);
   listLi.appendChild(listSpan);
   toDoList.appendChild(listLi);
+  toDoList.classList.add("todo_list");
 
   removeBtn.addEventListener("click", deleteToDo);
   checkBox.addEventListener("click", checkToDo);
