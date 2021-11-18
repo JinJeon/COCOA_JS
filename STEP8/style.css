@@ -8,6 +8,8 @@ body {
 }
 
 h1 {
+  display: inline-block;
+  width: 300px;
   color: rgb(97, 124, 94);
   background-color: rgb(233, 210, 136);
   font-size: 50px;
