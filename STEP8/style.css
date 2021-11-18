@@ -27,10 +27,8 @@ h2 {
 .todo_form input {
   all: unset;
   margin: 10px;
-  border: solid;
-  border-color: rgb(218, 197, 129);
+  border: solid 5px rgb(218, 197, 129);
   border-radius: 10px;
-  border-width: 5px;
   padding: 10px;
   font-size: 15px;
   font-weight: 500;
