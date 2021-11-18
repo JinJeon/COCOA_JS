@@ -1,8 +1,9 @@
-const toDoForm = document.getElementById("todo-form");
-const toDoList = document.getElementById("todo-list");
-const toDoInput = toDoForm.querySelector("input");
-
 class handleToDo {
+  constructor(form, list) {
+    this.form = document.getElementById(`${form}`);
+    this.list = document.getElementById(`${list}`);
+    this.input = this.form.querySelector("input");
+  }
   deleteToDo(event) {
     const targetLi =
       event.target.parentElement.parentElement.parentElement.parentElement;
@@ -15,7 +16,7 @@ class handleToDo {
   }
 
   makeToDo() {
-    const toDoValue = toDoInput.value;
+    const toDoValue = this.input.value;
     const listLi = document.createElement("li");
     listLi.innerText = toDoValue;
     const listSpan = document.createElement("span");
@@ -27,8 +28,9 @@ class handleToDo {
     listSpan.appendChild(checkBox);
     listSpan.appendChild(removeBtn);
     listLi.appendChild(listSpan);
-    toDoList.appendChild(listLi);
-    toDoList.classList.add("todo_list");
+    this.list.appendChild(listLi);
+    this.list.classList.add("todo_list");
+    this.input.value = "";
 
     removeBtn.addEventListener("click", this.deleteToDo);
     checkBox.addEventListener("click", this.checkToDo);
@@ -36,10 +38,8 @@ class handleToDo {
 
   handleToDoInput(event) {
     event.preventDefault();
-    console.log(this);
     this.makeToDo();
   }
 }
-const newToDo = new handleToDo();
+const newToDo = new handleToDo("todo-form", "todo-list");
 document.addEventListener("submit", newToDo.handleToDoInput.bind(newToDo));
-console.log(this);
