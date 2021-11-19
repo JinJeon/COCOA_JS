@@ -47,6 +47,7 @@ h2 {
 }
 .todo_form input[type="text"],
 .have_form input[type="text"] {
+  font-size: 15px;
 }
 .todo_form input[type="submit"],
 .have_form input[type="submit"] {
@@ -75,7 +76,7 @@ button {
   border-radius: 10px;
 }
 .todo_list li,
-.haver_list li {
+.have_list li {
   position: relative;
   margin-top: 5px;
   margin-bottom: 10px;
@@ -86,12 +87,12 @@ button {
 .have_list input[type="checkbox"] {
   position: absolute;
   right: 1px;
-  bottom: 1px;
+  bottom: 0px;
 }
 .todo_list svg,
-.haver_list svg {
+.have_list svg {
   position: absolute;
   color: rgb(218, 197, 129);
-  bottom: 1px;
+  bottom: 0px;
   left: 1px;
 }
