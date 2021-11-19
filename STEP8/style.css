@@ -24,24 +24,36 @@ h2 {
   font-size: 30px;
   font-weight: 500;
 }
-.todo_form input {
-  all: unset;
-  margin: 10px;
+.sum_container {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(200px, auto));
+  column-gap: 20px;
+  justify-content: center;
+}
+.todo_form,
+.have_form {
+  margin-top: 10px;
+  margin-bottom: 10px;
   border: solid 5px rgb(218, 197, 129);
   border-radius: 10px;
+}
+.todo_form input,
+.have_form input {
+  all: unset;
   padding: 10px;
   font-size: 15px;
   font-weight: 500;
   vertical-align: auto;
 }
-.todo_form input[type="text"] {
-  width: 225px;
+.todo_form input[type="text"],
+.have_form input[type="text"] {
 }
-.todo_form input[type="submit"] {
+.todo_form input[type="submit"],
+.have_form input[type="submit"] {
   border: 0ch;
-  font-size: 30px;
+  font-size: 20px;
   font-weight: 800;
-  padding-left: 5px;
+  border-left: dashed 3px;
 }
 
 button {
@@ -52,29 +64,34 @@ button {
 .delete {
   text-decoration: line-through;
 }
-.todo_list {
+.todo_list,
+.have_list {
   font-size: 15px;
   max-width: 300px;
   margin: auto;
   margin-top: 10px;
-  padding: 5px;
-  border: solid;
+  padding: 10px;
+  border: solid 5px rgb(236, 214, 139);
   border-radius: 10px;
-  border-color: rgb(236, 214, 139);
-  border-width: 5px;
 }
-.todo_list li {
+.todo_list li,
+.haver_list li {
   position: relative;
-  margin: 10px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: 600;
 }
-.todo_list input[type="checkbox"] {
+.todo_list input[type="checkbox"],
+.have_list input[type="checkbox"] {
   position: absolute;
-  right: 5px;
-}
-.todo_list svg {
-  position: absolute;
-  background-color: rgb(97, 124, 94);
-  color: rgb(218, 197, 129);
-  left: 5px;
+  right: 1px;
   bottom: 1px;
+}
+.todo_list svg,
+.haver_list svg {
+  position: absolute;
+  color: rgb(218, 197, 129);
+  bottom: 1px;
+  left: 1px;
 }
