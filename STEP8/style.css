@@ -1,4 +1,36 @@
 @import "reset.css";
+@keyframes fadeout {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@-moz-keyframes fadeout {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@-webkit-keyframes fadeout {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@-o-keyframes fadeout {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
 body {
   background-color: rgb(97, 124, 94);
   color: rgb(228, 206, 135);
@@ -14,12 +46,29 @@ h1 {
   background-color: rgb(233, 210, 136);
   font-size: 50px;
   font-weight: 500;
-  margin: 50px;
+  margin: 30px;
   padding: 10px;
   border: solid;
   border-radius: 10px;
   border-color: rgb(218, 197, 129);
 }
+.warning {
+  display: inline-block;
+  margin-bottom: 20px;
+  padding: 10px;
+  font-weight: 500;
+  border-radius: 10px;
+  color: rgb(206, 206, 206);
+  background-color: rgb(194, 114, 114);
+  animation: fadeout 10s;
+  -moz-animation: fadeout 10s; /* Firefox */
+  -webkit-animation: fadeout 10s; /* Safari and Chrome */
+  -o-animation: fadeout 10s; /* Opera */
+  animation-fill-mode: forwards;
+}
+/* .hidden {
+  visibility: hidden;
+} */
 h2 {
   font-size: 30px;
   font-weight: 500;
@@ -64,21 +113,23 @@ button {
 }
 .delete {
   text-decoration: line-through;
+  text-decoration-thickness: 3px;
+  text-decoration-color: rgb(194, 114, 114);
 }
 .todo_list,
 .have_list {
   font-size: 15px;
   max-width: 300px;
-  margin: auto;
   margin-top: 10px;
-  padding: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
   border: solid 5px rgb(236, 214, 139);
   border-radius: 10px;
 }
 .todo_list li,
 .have_list li {
   position: relative;
-  margin-top: 5px;
+  margin-top: 10px;
   margin-bottom: 10px;
   font-size: 14px;
   font-weight: 600;
