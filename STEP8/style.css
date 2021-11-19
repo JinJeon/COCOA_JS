@@ -60,15 +60,24 @@ h1 {
   border-radius: 10px;
   color: rgb(206, 206, 206);
   background-color: rgb(194, 114, 114);
+}
+.fadeout {
   animation: fadeout 10s;
-  -moz-animation: fadeout 10s; /* Firefox */
-  -webkit-animation: fadeout 10s; /* Safari and Chrome */
-  -o-animation: fadeout 10s; /* Opera */
+  -moz-animation: fadeout 10s;
+  -webkit-animation: fadeout 10s;
+  -o-animation: fadeout 10s;
   animation-fill-mode: forwards;
 }
-/* .hidden {
+.fadein {
+  animation: fadein 1s;
+  -moz-animation: fadein 1s;
+  -webkit-animation: fadein 1s;
+  -o-animation: fadein 1s;
+  animation-fill-mode: forwards;
+}
+.hidden {
   visibility: hidden;
-} */
+}
 h2 {
   font-size: 30px;
   font-weight: 500;

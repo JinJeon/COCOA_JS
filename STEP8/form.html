@@ -11,7 +11,7 @@
   <header>
     <h1>TO DO LIST</h1>
     <br>
-    <div class="warning hidden">
+    <div id="warning" class="warning hidden">
       FILL IN THE BLANK
     </div>
   </header>
@@ -19,7 +19,7 @@
     <div class="todo_item">
       <h2>DO IT</h2>
       <form id="todo-form" class="todo_form">
-        <input type="text" placeholder="NEW TASK" maxlength=15 required>
+        <input type="text" placeholder="NEW TASK" maxlength=15>
         <input type="submit" value="+">
       </form>
       <ul id="todo-list" > 
@@ -28,7 +28,7 @@
     <div class="have_item">
       <h2>WANT IT</h2>
       <form id="have-form" class="have_form">
-        <input type="text" placeholder="NEW ITEM" maxlength=15 required>
+        <input type="text" placeholder="NEW ITEM" maxlength=15>
         <input type="submit" value="+">
       </form>
       <ul id="have-list">

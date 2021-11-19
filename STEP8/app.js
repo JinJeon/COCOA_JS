@@ -7,7 +7,6 @@ class handleToDo {
     this.listElement = document.getElementById(`${this.list}`);
     this.input = this.formElement.querySelector("input");
   }
-
   deleteToDo(event) {
     const targetLi =
       event.target.parentElement.parentElement.parentElement.parentElement;
@@ -39,9 +38,19 @@ class handleToDo {
     removeBtn.addEventListener("click", this.deleteToDo);
     checkBox.addEventListener("click", this.checkToDo);
   }
-
+  makeClass(id, element) {
+    id.classList.toggle(element);
+  }
   handleToDoInput(event) {
+    warning.classList.add("hidden");
+    // warning.classList.remove("fadeout");
     event.preventDefault();
+    if (this.input.value === "") {
+      const warning = document.getElementById("warning");
+      warning.classList.remove("hidden");
+      // warning.classList.add("fadeout");
+      return;
+    }
     this.makeToDo();
   }
 }
@@ -52,3 +61,4 @@ toHaves.formElement.addEventListener(
   "submit",
   toHaves.handleToDoInput.bind(toHaves)
 );
+// document.addEventListener("emptied", () => console.log(1));
