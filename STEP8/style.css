@@ -124,6 +124,7 @@ button {
   font-size: 15px;
   max-width: 300px;
   margin-top: 10px;
+  margin-bottom: 10px;
   padding-left: 10px;
   padding-right: 10px;
   border: solid 5px rgb(236, 214, 139);
@@ -142,6 +143,7 @@ button {
 }
 .todo_list input[type="checkbox"],
 .have_list input[type="checkbox"] {
+  border: solid 2px black;
 }
 .todo_list svg,
 .have_list svg {
