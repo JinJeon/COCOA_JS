@@ -68,13 +68,6 @@ h1 {
   -o-animation: fadeout 10s;
   animation-fill-mode: forwards;
 }
-.fadein {
-  animation: fadein 1s;
-  -moz-animation: fadein 1s;
-  -webkit-animation: fadein 1s;
-  -o-animation: fadein 1s;
-  animation-fill-mode: forwards;
-}
 .hidden {
   visibility: hidden;
 }
@@ -127,6 +120,7 @@ button {
 }
 .todo_list,
 .have_list {
+  position: relative;
   font-size: 15px;
   max-width: 300px;
   margin-top: 10px;
@@ -137,7 +131,10 @@ button {
 }
 .todo_list li,
 .have_list li {
-  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 9fr 1fr;
+  align-items: center;
+  text-align: left;
   margin-top: 10px;
   margin-bottom: 10px;
   font-size: 14px;
@@ -145,14 +142,10 @@ button {
 }
 .todo_list input[type="checkbox"],
 .have_list input[type="checkbox"] {
-  position: absolute;
-  right: 1px;
-  bottom: 0px;
 }
 .todo_list svg,
 .have_list svg {
-  position: absolute;
+  border: unset;
   color: rgb(218, 197, 129);
-  bottom: 0px;
-  left: 1px;
+  background-color: rgb(97, 124, 94);
 }

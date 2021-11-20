@@ -1,4 +1,4 @@
-class handleToDo {
+class handleList {
   constructor(value) {
     this.value = value;
     this.form = `${value}-form`;
@@ -7,38 +7,40 @@ class handleToDo {
     this.listElement = document.getElementById(`${this.list}`);
     this.input = this.formElement.querySelector("input");
   }
-  deleteToDo(event) {
-    const targetLi =
-      event.target.parentElement.parentElement.parentElement.parentElement;
+  deleteList(event) {
+    const targetLi = event.target.closest("li");
     targetLi.remove();
     if (this.listElement.querySelector("li") === null) {
       this.listElement.classList.remove(`${this.value}_list`);
     }
   }
 
-  checkToDo(event) {
+  checkList(event) {
     const targetBox = event.target.parentElement.parentElement;
     targetBox.classList.toggle("delete");
   }
 
-  makeToDo() {
+  makeList() {
     const toDoValue = this.input.value;
     const listLi = document.createElement("li");
-    listLi.innerText = toDoValue;
     const listSpan = document.createElement("span");
+    const listTrashSpan = document.createElement("span");
     const checkBox = document.createElement("input");
+    const removeBtn = document.createElement("i");
+    listSpan.innerText = toDoValue;
     checkBox.setAttribute("type", "checkbox");
-    const removeBtn = document.createElement("button");
-    removeBtn.innerHTML = '<i class="fas fa-trash"></i>';
+    removeBtn.setAttribute("class", "fas fa-trash");
 
-    listSpan.appendChild(checkBox);
-    listSpan.appendChild(removeBtn);
+    // listLi.innerHTML = '<i class="fas fa-trash"></i>';
+    listTrashSpan.appendChild(removeBtn);
+    listLi.appendChild(listTrashSpan);
     listLi.appendChild(listSpan);
+    listLi.appendChild(checkBox);
     this.listElement.appendChild(listLi);
     this.listElement.classList.add(`${this.value}_list`);
     this.input.value = "";
-    removeBtn.addEventListener("click", this.deleteToDo.bind(this));
-    checkBox.addEventListener("click", this.checkToDo.bind(this));
+    listTrashSpan.addEventListener("click", this.deleteList.bind(this));
+    checkBox.addEventListener("click", this.checkList.bind(this));
   }
   handleToDoInput(event) {
     warning.classList.add("hidden");
@@ -50,11 +52,11 @@ class handleToDo {
       // warning.classList.add("fadeout");
       return;
     }
-    this.makeToDo();
+    this.makeList();
   }
 }
-const toDos = new handleToDo("todo");
-const toHaves = new handleToDo("have");
+const toDos = new handleList("todo");
+const toHaves = new handleList("have");
 toDos.formElement.addEventListener("submit", toDos.handleToDoInput.bind(toDos));
 toHaves.formElement.addEventListener(
   "submit",
