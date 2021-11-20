@@ -16,40 +16,37 @@ class handleList {
   }
 
   checkList(event) {
-    const targetBox = event.target.parentElement.parentElement;
+    const targetBox = event.target.closest("li");
     targetBox.classList.toggle("delete");
   }
 
   makeList() {
     const toDoValue = this.input.value;
     const listLi = document.createElement("li");
-    const listSpan = document.createElement("span");
-    const listTrashSpan = document.createElement("span");
+    const valueSpan = document.createElement("span");
+    const removeSpan = document.createElement("span");
     const checkBox = document.createElement("input");
-    const removeBtn = document.createElement("i");
-    listSpan.innerText = toDoValue;
+    const removeIcon = document.createElement("i");
+    valueSpan.innerText = toDoValue;
     checkBox.setAttribute("type", "checkbox");
-    removeBtn.setAttribute("class", "fas fa-trash");
+    removeIcon.setAttribute("class", "fas fa-trash");
 
-    // listLi.innerHTML = '<i class="fas fa-trash"></i>';
-    listTrashSpan.appendChild(removeBtn);
-    listLi.appendChild(listTrashSpan);
-    listLi.appendChild(listSpan);
+    removeSpan.appendChild(removeIcon);
+    listLi.appendChild(removeSpan);
+    listLi.appendChild(valueSpan);
     listLi.appendChild(checkBox);
     this.listElement.appendChild(listLi);
     this.listElement.classList.add(`${this.value}_list`);
     this.input.value = "";
-    listTrashSpan.addEventListener("click", this.deleteList.bind(this));
+    removeSpan.addEventListener("click", this.deleteList.bind(this));
     checkBox.addEventListener("click", this.checkList.bind(this));
   }
   handleToDoInput(event) {
-    warning.classList.add("hidden");
-    // warning.classList.remove("fadeout");
     event.preventDefault();
+    warning.classList.add("hidden");
     if (this.input.value === "") {
       const warning = document.getElementById("warning");
       warning.classList.remove("hidden");
-      // warning.classList.add("fadeout");
       return;
     }
     this.makeList();
