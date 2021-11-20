@@ -11,6 +11,9 @@ class handleToDo {
     const targetLi =
       event.target.parentElement.parentElement.parentElement.parentElement;
     targetLi.remove();
+    if (this.listElement.querySelector("li") === null) {
+      this.listElement.classList.remove(`${this.value}_list`);
+    }
   }
 
   checkToDo(event) {
@@ -34,12 +37,8 @@ class handleToDo {
     this.listElement.appendChild(listLi);
     this.listElement.classList.add(`${this.value}_list`);
     this.input.value = "";
-
-    removeBtn.addEventListener("click", this.deleteToDo);
-    checkBox.addEventListener("click", this.checkToDo);
-  }
-  makeClass(id, element) {
-    id.classList.toggle(element);
+    removeBtn.addEventListener("click", this.deleteToDo.bind(this));
+    checkBox.addEventListener("click", this.checkToDo.bind(this));
   }
   handleToDoInput(event) {
     warning.classList.add("hidden");
@@ -61,4 +60,3 @@ toHaves.formElement.addEventListener(
   "submit",
   toHaves.handleToDoInput.bind(toHaves)
 );
-// document.addEventListener("emptied", () => console.log(1));
