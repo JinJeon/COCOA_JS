@@ -8,16 +8,27 @@ class handleList {
     this.input = this.formElement.querySelector("input");
     this.deleteIcon = document.getElementById(`${this.value}_delete_icon`);
   }
+
   makeDeleteIcon() {
-    if (this.listElement.querySelector("li") !== null) {
+    if (this.listElement.querySelectorAll("li").length === 1) {
       this.deleteIcon.classList.remove("hidden");
+      this.deleteIcon.addEventListener("click", this.deleteAll.bind(this));
     }
   }
+  deleteAll() {
+    this.listElement.querySelectorAll("li").forEach((e) => e.remove());
+    if (this.listElement.querySelector("li") === null) {
+      this.listElement.classList.remove(`${this.value}_list`);
+      this.deleteIcon.classList.add("hidden");
+    }
+  }
+
   deleteList(event) {
     const targetLi = event.target.closest("li");
     targetLi.remove();
     if (this.listElement.querySelector("li") === null) {
       this.listElement.classList.remove(`${this.value}_list`);
+      this.deleteIcon.classList.add("hidden");
     }
   }
 
