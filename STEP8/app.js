@@ -6,13 +6,29 @@ class handleList {
     this.formElement = document.getElementById(`${this.form}`);
     this.listElement = document.getElementById(`${this.list}`);
     this.input = this.formElement.querySelector("input");
+    this.deleteIcon = document.getElementById(`${this.value}_delete_icon`);
   }
+  ifAllDelete() {
+    if (this.listElement.querySelector("li") === null) {
+      this.listElement.classList.remove(`${this.value}_list`);
+      this.deleteIcon.classList.add("hidden");
+    }
+  }
+  makeDeleteIcon() {
+    if (this.listElement.querySelectorAll("li").length === 1) {
+      this.deleteIcon.classList.remove("hidden");
+      this.deleteIcon.addEventListener("click", this.deleteAll.bind(this));
+    }
+  }
+  deleteAll() {
+    this.listElement.querySelectorAll("li").forEach((e) => e.remove());
+    this.ifAllDelete();
+  }
+
   deleteList(event) {
     const targetLi = event.target.closest("li");
     targetLi.remove();
-    if (this.listElement.querySelector("li") === null) {
-      this.listElement.classList.remove(`${this.value}_list`);
-    }
+    this.ifAllDelete();
   }
 
   checkList(event) {
@@ -25,8 +41,8 @@ class handleList {
     const listLi = document.createElement("li");
     const valueSpan = document.createElement("span");
     const removeSpan = document.createElement("span");
-    const checkBox = document.createElement("input");
     const removeIcon = document.createElement("i");
+    const checkBox = document.createElement("input");
     valueSpan.innerText = toDoValue;
     checkBox.setAttribute("type", "checkbox");
     removeIcon.setAttribute("class", "fas fa-trash");
@@ -38,8 +54,10 @@ class handleList {
     this.listElement.appendChild(listLi);
     this.listElement.classList.add(`${this.value}_list`);
     this.input.value = "";
+
     removeSpan.addEventListener("click", this.deleteList.bind(this));
     checkBox.addEventListener("click", this.checkList.bind(this));
+    this.makeDeleteIcon();
   }
   handleToDoInput(event) {
     event.preventDefault();

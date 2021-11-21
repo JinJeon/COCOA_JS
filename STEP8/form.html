@@ -17,7 +17,10 @@
   </header>
   <div class="sum_container">
     <div class="todo_item">
-      <h2>DO IT</h2>
+      <div class="todo_name"> 
+        <span>DO IT</span>
+        <span id="todo_delete_icon" class="hidden"><i class="fas fa-trash"></i></span>
+      </div>
       <form id="todo-form" class="todo_form">
         <input type="text" placeholder="NEW TASK" maxlength=15>
         <input type="submit" value="+">
@@ -26,7 +29,10 @@
       </ul>
     </div>
     <div class="have_item">
-      <h2>WANT IT</h2>
+      <div class="todo_name">
+        <span>WANT IT</span>
+        <span id="have_delete_icon" class="hidden"><i class="fas fa-trash"></i></span>
+      </div>
       <form id="have-form" class="have_form">
         <input type="text" placeholder="NEW ITEM" maxlength=15>
         <input type="submit" value="+">
