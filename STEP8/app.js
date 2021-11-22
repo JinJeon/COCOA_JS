@@ -1,17 +1,15 @@
 class handleList {
   constructor(value) {
-    this.value = value;
     this.mention = "";
-    this.formElement = document.getElementById(`${this.value}-form`);
-    this.listElement = document.getElementById(`${this.value}-list`);
-    this.nameElement = document.getElementById(`${this.value}-name`);
+    this.formElement = document.getElementById(`${value}-form`);
+    this.listElement = document.getElementById(`${value}-list`);
+    this.nameElement = document.getElementById(`${value}-name`);
     this.warning = document.getElementById("warning");
     this.input = this.formElement.querySelector("input");
-    this.deleteIcon = document.getElementById(`${this.value}-delete-icon`);
+    this.deleteIcon = document.getElementById(`${value}-delete-icon`);
   }
   noticeWarning() {
-    this.mention = "DOUBLE CLICK ICON TO DELETE ALL";
-    this.warning.innerText = this.mention;
+    this.warning.innerText = "DOUBLE CLICK ICON TO DELETE ALL";
     this.warning.classList.remove("hidden");
   }
   ifAllDelete() {
@@ -30,8 +28,7 @@ class handleList {
   deleteAll() {
     this.listElement.querySelectorAll("li").forEach((e) => e.remove());
     this.ifAllDelete();
-    this.mention = `ALL DELETED (${this.nameElement.innerText})`;
-    this.warning.innerText = this.mention;
+    this.warning.innerText = `ALL DELETED (${this.nameElement.innerText})`;
   }
 
   deleteList(event) {
@@ -42,17 +39,19 @@ class handleList {
   getEditList(event) {
     const targetSpan = event.target.closest("li").querySelectorAll("span")[2];
     const targetValue = targetSpan.innerText;
-    console.log(targetSpan);
-    console.log(targetSpan.innerHTML.length);
     if (targetSpan.innerHTML.length <= 28) {
       targetSpan.innerHTML = `<form><input type="text" placeholder=${targetValue} value=${targetValue} maxlength=15></form>`;
     }
     targetSpan.addEventListener("submit", this.postEditList.bind(this));
+    this.mention = "PRESS ENTER TO FINISH EDITING";
+    this.warning.innerText = this.mention;
+    this.warning.classList.remove("hidden");
   }
   postEditList(event) {
     event.preventDefault();
     const inputValue = event.target.querySelector("input").value;
     event.target.innerHTML = `${inputValue}`;
+    this.warning.classList.add("hidden");
   }
   checkList(event) {
     const targetBox = event.target.closest("li");
@@ -79,7 +78,6 @@ class handleList {
     listLi.appendChild(editSpan);
     listLi.appendChild(valueSpan);
     listLi.appendChild(checkBox);
-    listLi.setAttribute("id", Date.now());
     this.listElement.appendChild(listLi);
     this.listElement.classList.add("module_list");
     this.input.value = "";
@@ -93,8 +91,7 @@ class handleList {
     event.preventDefault();
     this.warning.classList.add("hidden");
     if (this.input.value === "") {
-      this.mention = "FILL IN THE BLANK";
-      this.warning.innerText = this.mention;
+      this.warning.innerText = "FILL IN THE BLANK";
       this.warning.classList.remove("hidden");
       return;
     }
@@ -108,3 +105,5 @@ toHaves.formElement.addEventListener(
   "submit",
   toHaves.handleToDoInput.bind(toHaves)
 );
+
+//keydown?

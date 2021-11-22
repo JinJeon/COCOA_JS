@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./style.css">
+  <title>TO DO LIST</title>
+</head>
+
+<body>
+  <header>
+    <h1>TO DO LIST</h1>
+    <br>
+    <div id="warning" class="warning hidden">
+      FILL IN THE BLANK
+    </div>
+  </header>
+  <div class="sum_container">
+    <div class="module_item">
+      <div class="module_container">
+        <span id="todo-name">DO IT</span>
+        <span id="todo-delete-icon" class="hidden"><i class="fas fa-trash"></i></span>
+      </div>
+      <form id="todo-form" class="module_form">
+        <input type="text" placeholder="NEW TASK" maxlength=15>
+        <input type="submit" value="+">
+      </form>
+      <ul id="todo-list">
+      </ul>
+    </div>
+    <div class="module_item">
+      <div class="module_container">
+        <span id="have-name">WANT IT</span>
+        <span id="have-delete-icon" class="hidden"><i class="fas fa-trash"></i></span>
+      </div>
+      <form id="have-form" class="module_form">
+        <input type="text" placeholder="NEW ITEM" maxlength=15>
+        <input type="submit" value="+">
+      </form>
+      <ul id="have-list">
+      </ul>
+    </div>
+  </div>
+</body>
+<script src="./class.js"></script>
+<script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+
+</html>
