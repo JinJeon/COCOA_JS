@@ -3,10 +3,17 @@ class handleList {
     this.value = value;
     this.form = `${value}-form`;
     this.list = `${value}-list`;
+    this.mention = "";
     this.formElement = document.getElementById(`${this.form}`);
     this.listElement = document.getElementById(`${this.list}`);
+    this.warning = document.getElementById("warning");
     this.input = this.formElement.querySelector("input");
     this.deleteIcon = document.getElementById(`${this.value}_delete_icon`);
+  }
+  noticeWarning() {
+    this.mention = "DOUBLE CLICK ICON TO DELETE ALL";
+    this.warning.innerText = this.mention;
+    this.warning.classList.remove("hidden");
   }
   ifAllDelete() {
     if (this.listElement.querySelector("li") === null) {
@@ -17,12 +24,15 @@ class handleList {
   makeDeleteIcon() {
     if (this.listElement.querySelectorAll("li").length === 1) {
       this.deleteIcon.classList.remove("hidden");
-      this.deleteIcon.addEventListener("click", this.deleteAll.bind(this));
+      this.deleteIcon.addEventListener("click", this.noticeWarning.bind(this));
+      this.deleteIcon.addEventListener("dblclick", this.deleteAll.bind(this));
     }
   }
   deleteAll() {
     this.listElement.querySelectorAll("li").forEach((e) => e.remove());
     this.ifAllDelete();
+    this.mention = "ALL DELETED";
+    this.warning.innerText = this.mention;
   }
 
   deleteList(event) {
@@ -61,10 +71,11 @@ class handleList {
   }
   handleToDoInput(event) {
     event.preventDefault();
-    warning.classList.add("hidden");
+    this.warning.classList.add("hidden");
     if (this.input.value === "") {
-      const warning = document.getElementById("warning");
-      warning.classList.remove("hidden");
+      this.mention = "FILL IN THE BLANK";
+      this.warning.innerText = this.mention;
+      this.warning.classList.remove("hidden");
       return;
     }
     this.makeList();
