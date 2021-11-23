@@ -81,6 +81,7 @@ class handleList {
     this.listElement.appendChild(listLi);
     this.listElement.classList.add("module_list");
     this.input.value = "";
+    console.log(removeSpan);
 
     removeSpan.addEventListener("click", this.deleteList.bind(this));
     editSpan.addEventListener("click", this.getEditList.bind(this));

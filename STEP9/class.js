@@ -39,7 +39,8 @@ class listView {
   getValueSpan() {
     const innerValue = this.listModel.valueFormInput.value;
     const valueSpan = document.createElement("span");
-    return (valueSpan.innerText = innerValue);
+    valueSpan.innerText = innerValue;
+    return valueSpan;
   }
   getRemoveSpan() {
     const removeSpan = document.createElement("span");
@@ -62,7 +63,6 @@ class listView {
   }
   getlistLi() {
     const listLi = document.createElement("li");
-    console.log(this.getValueSpan());
     listLi.append(
       this.getRemoveSpan(),
       this.getEditSpan(),
@@ -71,10 +71,12 @@ class listView {
     );
     return listLi;
   }
-  renderList() {
-    this.listModel.valueList.appendChild(this.getlistLi());
+  makeList() {
+    const targetLi = this.getlistLi();
+    this.listModel.valueList.appendChild(targetLi);
     this.listModel.valueList.classList.add("module_list");
     this.listModel.valueFormInput.value = "";
+    return targetLi;
   }
   // create list
 
@@ -83,7 +85,7 @@ class listView {
     this.listModel.warning.classList.remove("hidden");
   }
   ifAllDelete() {
-    if (this.listModel.valueListLi === null) {
+    if (this.listModel.valueList.querySelector("li") === null) {
       this.listModel.valueList.classList.remove("module_list");
       this.listModel.deleteIcon.classList.add("hidden");
     }
@@ -93,15 +95,15 @@ class listView {
   }
   deleteAll() {
     this.listModel.valueListLiAll.forEach((e) => e.remove());
-    this.ifAllDelete(this.listModel);
+    this.listView.ifAllDelete();
     this.listModel.warning.innerText = `ALL DELETED (${this.listModel.valueName.innerText})`;
   }
   deleteList(event) {
     const targetLi = event.target.closest("li");
     targetLi.remove();
-    this.ifAllDelete(this.listModel);
+    this.listView.ifAllDelete();
   }
-  getEditList(event) {
+  getEditList() {
     const targetSpan = event.target.closest("li").querySelectorAll("span")[2];
     const targetValue = targetSpan.innerText;
     if (targetSpan.innerHTML.length <= 28) {
@@ -120,8 +122,7 @@ class listView {
     const targetBox = event.target.closest("li");
     targetBox.classList.toggle("delete");
   }
-  renderFilterListInput() {
-    // event.preventDefault();
+  filterBlank() {
     this.listModel.warning.classList.add("hidden");
     if (this.listModel.valueFormInput.value === "") {
       this.listModel.warning.innerText = "FILL IN THE BLANK";
@@ -143,29 +144,31 @@ class listController {
       this.listView.getDeleteAllIcon();
       this.listModel.deleteIcon.addEventListener(
         "click",
-        this.noticeWarning.bind(this)
+        this.listView.noticeWarning.bind(this)
       );
       this.listModel.deleteIcon.addEventListener(
         "dblclick",
-        this.deleteAll.bind(this)
+        this.listView.deleteAll.bind(this)
       );
     }
   }
   getEditListEvent(event) {
     this.listView.getEditList();
     const targetSpan = event.target.closest("li").querySelectorAll("span")[2];
-    targetSpan.addEventListener("submit", this.postEditList.bind(this));
+    targetSpan.addEventListener(
+      "submit",
+      this.listView.postEditList.bind(this)
+    );
   }
   inputListEvent(event) {
     event.preventDefault();
-    if (!this.listView.renderFilterListInput()) return;
-    this.listView.renderList();
-    const spanArr = this.listView.getlistLi().childNodes;
-    console.log(spanArr);
+    if (!this.listView.filterBlank()) return;
+    const spanArr = this.listView.makeList().childNodes;
     spanArr[0].addEventListener("click", this.listView.deleteList.bind(this));
-    spanArr[1].addEventListener("click", this.listView.getEditList.bind(this));
+    spanArr[1].addEventListener("click", this.getEditListEvent.bind(this));
     spanArr[3].addEventListener("click", this.listView.checkList.bind(this));
     this.listView.getDeleteAllIcon();
+    this.getDeleteAllEvent();
   }
   printListEvent() {
     this.listModel.valueForm.addEventListener(
