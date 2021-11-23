@@ -31,9 +31,15 @@
     opacity: 0;
   }
 }
+:root {
+  --green1: rgb(97, 124, 94);
+  --yellow1: rgb(228, 206, 135);
+  --red1: rgb(194, 114, 114);
+  --grey1: rgb(173, 171, 171);
+}
 body {
-  background-color: rgb(97, 124, 94);
-  color: rgb(228, 206, 135);
+  background-color: var(--green1);
+  color: var(--yellow1);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   text-align: center;
@@ -42,15 +48,15 @@ body {
 h1 {
   display: inline-block;
   width: 300px;
-  color: rgb(97, 124, 94);
-  background-color: rgb(233, 210, 136);
+  color: var(--green1);
+  background-color: var(--yellow1);
   font-size: 50px;
   font-weight: 500;
   margin: 30px;
   padding: 10px;
   border: solid;
   border-radius: 10px;
-  border-color: rgb(218, 197, 129);
+  border-color: var(--yellow1);
 }
 .warning {
   display: inline-block;
@@ -58,8 +64,8 @@ h1 {
   padding: 10px;
   font-weight: 700;
   border-radius: 10px;
-  color: rgb(206, 206, 206);
-  background-color: rgb(194, 114, 114);
+  color: var(--green1);
+  background-color: var(--red1);
 }
 .fadeout {
   animation: fadeout 10s;
@@ -88,12 +94,12 @@ h1 {
   right: 5px;
   bottom: 1px;
   font-size: 20px;
-  color: rgb(194, 114, 114);
+  color: var(--red1);
 }
 .module_form {
   margin-top: 10px;
   margin-bottom: 10px;
-  border: solid 5px rgb(218, 197, 129);
+  border: solid 5px var(--yellow1);
   border-radius: 10px;
   min-width: 260px;
 }
@@ -122,7 +128,7 @@ button {
 .delete {
   text-decoration: line-through;
   text-decoration-thickness: 3px;
-  text-decoration-color: rgb(194, 114, 114);
+  text-decoration-color: var(--red1);
 }
 .module_list {
   position: relative;
@@ -132,7 +138,7 @@ button {
   margin-bottom: 10px;
   padding-left: 10px;
   padding-right: 10px;
-  border: solid 5px rgb(236, 214, 139);
+  border: solid 5px var(--yellow1);
   border-radius: 10px;
 }
 .module_list li {
@@ -151,14 +157,14 @@ button {
 }
 .module_list svg {
   border: unset;
-  color: rgb(218, 197, 129);
-  background-color: rgb(97, 124, 94);
+  color: var(--yellow1);
+  background-color: var(--green1);
 }
 .module_list input[type="text"] {
   border: unset;
-  border: dotted 2px rgb(218, 197, 129);
+  border: dotted 2px var(--yellow1);
   font-size: 11px;
   font-weight: 600;
-  color: rgb(173, 171, 171);
-  background-color: rgb(97, 124, 94);
+  color: var(--grey1);
+  background-color: var(--green1);
 }
