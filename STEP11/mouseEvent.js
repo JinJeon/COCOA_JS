@@ -3,7 +3,12 @@ const listContent = document.querySelector(".list-content");
 const showContent = () => {
   listContent.classList.remove("hidden");
 };
+
 const mouseenterHandler = () => {
-  setTimeout(showContent, 1000);
+  const startTimer = setTimeout(showContent, 1000);
+  const mouseleaveHandler = () => {
+    clearTimeout(startTimer);
+  };
+  list.addEventListener("mouseleave", mouseleaveHandler);
 };
 list.addEventListener("mouseenter", mouseenterHandler);
