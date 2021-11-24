@@ -22,12 +22,16 @@ const drawResultList = () => {
   result.appendChild(appendedLists);
 };
 
+const mouseleaveHandler = () => {
+  listContent.classList.add("hidden");
+};
+
 const mouseenterHandler = () => {
   const startTimer = setTimeout(showContent, 1000);
-  const mouseleaveHandler = () => {
+  const leaveHandler = () => {
     clearTimeout(startTimer);
   };
-  list.addEventListener("mouseleave", mouseleaveHandler);
+  list.addEventListener("mouseleave", leaveHandler);
 };
 
 const listMousemoveHandler = (event) => {
@@ -53,4 +57,5 @@ const listMousemoveHandler = (event) => {
 };
 
 list.addEventListener("mouseenter", mouseenterHandler);
+list.addEventListener("mouseleave", mouseleaveHandler);
 listChild.forEach((e) => e.addEventListener("mousemove", listMousemoveHandler));
