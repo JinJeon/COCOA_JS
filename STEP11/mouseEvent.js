@@ -31,22 +31,25 @@ const mouseenterHandler = () => {
 };
 
 const listMousemoveHandler = (event) => {
-  const resultText = event.target.innerHTML;
-  const filterArr = resultArr.filter((e) => e[resultText] !== undefined);
-  setTimeout();
-  const countMoving = () => {
-    if (filterArr.length === 0) {
-      resultArr.push({ [resultText]: 1 });
-    } else {
-      resultArr.forEach((e) => {
-        if (typeof e[resultText] === "number") {
-          e[resultText] = e[resultText] + 1;
-        }
-      });
-    }
-    drawResultList();
+  const target = event.target;
+  target.removeEventListener("mousemove", listMousemoveHandler);
+  const addEventTimer = () => {
+    target.addEventListener("mousemove", listMousemoveHandler);
   };
-  countMoving();
+  setTimeout(addEventTimer, 500);
+
+  const resultText = target.innerHTML;
+  const filterArr = resultArr.filter((e) => e[resultText] !== undefined);
+  if (filterArr.length === 0) {
+    resultArr.push({ [resultText]: 1 });
+  } else {
+    resultArr.forEach((e) => {
+      if (typeof e[resultText] === "number") {
+        e[resultText] = e[resultText] + 1;
+      }
+    });
+  }
+  drawResultList();
 };
 
 list.addEventListener("mouseenter", mouseenterHandler);
