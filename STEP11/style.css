@@ -1,0 +1,70 @@
+@import "reset.css";
+:root {
+  --green1: rgb(97, 124, 94);
+  --yellow1: rgb(228, 206, 135);
+  --red1: rgb(194, 114, 114);
+  --grey1: rgb(173, 171, 171);
+}
+body {
+  background-color: var(--green1);
+  color: var(--yellow1);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  text-align: center;
+}
+
+h1 {
+  display: inline-block;
+  width: 500px;
+  color: var(--green1);
+  background-color: var(--yellow1);
+  font-size: 50px;
+  font-weight: 500;
+  margin: 30px;
+  padding: 10px;
+  border: solid;
+  border-radius: 10px;
+  border-color: var(--yellow1);
+}
+.hidden {
+  visibility: hidden;
+}
+.sum {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(250px, auto));
+  grid-template-rows: repeat(1, minmax(220px, auto));
+  column-gap: 20px;
+  justify-content: center;
+}
+
+.list {
+  position: relative;
+  font-size: 15px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border: solid 5px var(--yellow1);
+  border-radius: 10px;
+}
+.list li {
+  display: grid;
+  grid-template-columns: 1fr;
+  column-gap: 1px;
+  align-items: center;
+  text-align: left;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 20px;
+  font-weight: 600;
+}
+.result-list {
+  position: relative;
+  font-size: 15px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border: solid 5px var(--grey1);
+  border-radius: 10px;
+}

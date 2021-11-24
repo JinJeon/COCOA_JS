@@ -8,9 +8,16 @@ class ListData {
     this.formElementInput = this.formElement.querySelector("input");
     this.listArr = [];
   }
-  getArrInfo() {
-    this.listArr.push(this.formElementInput.value);
+  setArrInfo() {
+    this.listArr.push({ value: this.formElementInput.value, id: Date.now() });
     localStorage.setItem(`${this.value}`, JSON.stringify(this.listArr));
+  }
+  getArrInfo() {
+    const savedArrInfo = localStorage.getItem(`${this.value}`);
+    if (savedArrInfo !== null) {
+      const parsedArrInfo = JSON.parse(savedArrInfo);
+      console.log(parsedArrInfo);
+    }
   }
 }
 
@@ -145,6 +152,7 @@ class ListController {
     if (this.ListViewer.isBlank()) return;
     const list = this.ListViewer.makeList();
     const listchild = list.childNodes;
+    this.ListData.setArrInfo();
     this.ListData.getArrInfo();
     this.ListData.formElementInput.value = "";
     listchild[0].addEventListener(
@@ -166,12 +174,12 @@ class ListController {
     );
   }
 }
-const todoModel = new ListData("todo");
-const havingModel = new ListData("having");
-const todoView = new ListViewer(todoModel);
-const havingView = new ListViewer(havingModel);
-const todoController = new ListController(todoModel, todoView);
-const havingController = new ListController(havingModel, havingView);
+const todoData = new ListData("todo");
+const havingData = new ListData("having");
+const todoViewer = new ListViewer(todoData);
+const havingViewer = new ListViewer(havingData);
+const todoController = new ListController(todoData, todoViewer);
+const havingController = new ListController(havingData, havingViewer);
 const init = function () {
   todoController.printListEvent();
   havingController.printListEvent();
