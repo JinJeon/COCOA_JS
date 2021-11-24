@@ -47,7 +47,8 @@ h1 {
   border: solid 5px var(--yellow1);
   border-radius: 10px;
 }
-.list li {
+.list li,
+.result li {
   display: grid;
   grid-template-columns: 1fr;
   column-gap: 1px;
@@ -58,9 +59,10 @@ h1 {
   font-size: 20px;
   font-weight: 600;
 }
-.result-list {
+.result {
   position: relative;
   font-size: 15px;
+  color: var(--grey1);
   margin-top: 10px;
   margin-bottom: 10px;
   padding-left: 10px;
