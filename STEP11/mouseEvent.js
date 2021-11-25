@@ -1,21 +1,20 @@
 const selector = {
   list: document.querySelector(".list"),
   listContent: document.querySelector(".list-content"),
-  listChild: listContent.querySelectorAll("li"),
   result: document.querySelector(".result"),
 };
-const list = document.querySelector(".list");
-const listContent = document.querySelector(".list-content");
-const listChild = listContent.querySelectorAll("li");
-const result = document.querySelector(".result");
 const resultArr = [];
 
 const showContent = () => {
-  listContent.classList.remove("hidden");
+  selector.listContent.classList.remove("hidden");
+};
+
+const mouseleaveHandler = () => {
+  selector.listContent.classList.add("hidden");
 };
 
 const drawResultList = () => {
-  resultLists = result.querySelector("ul");
+  resultLists = selector.result.querySelector("ul");
   if (resultLists) {
     resultLists.remove();
   }
@@ -25,11 +24,7 @@ const drawResultList = () => {
     appendedPart.innerHTML = `${Object.keys(e)} : ${Object.values(e)}`;
     appendedLists.appendChild(appendedPart);
   });
-  result.appendChild(appendedLists);
-};
-
-const mouseleaveHandler = () => {
-  listContent.classList.add("hidden");
+  selector.result.appendChild(appendedLists);
 };
 
 const mouseenterHandler = () => {
@@ -37,7 +32,7 @@ const mouseenterHandler = () => {
   const leaveHandler = () => {
     clearTimeout(startTimer);
   };
-  list.addEventListener("mouseleave", leaveHandler);
+  selector.list.addEventListener("mouseleave", leaveHandler);
 };
 
 const listMousemoveHandler = (event) => {
@@ -49,7 +44,7 @@ const listMousemoveHandler = (event) => {
   setTimeout(addEventTimer, 500);
 
   const resultText = target.innerHTML;
-  const filterArr = resultArr.filter((e) => e[resultText] !== undefined);
+  const filterArr = resultArr.filter((e) => typeof e[resultText] === "number");
   if (filterArr.length === 0) {
     resultArr.push({ [resultText]: 1 });
   } else {
@@ -62,6 +57,8 @@ const listMousemoveHandler = (event) => {
   drawResultList();
 };
 
-list.addEventListener("mouseenter", mouseenterHandler);
-list.addEventListener("mouseleave", mouseleaveHandler);
-listChild.forEach((e) => e.addEventListener("mousemove", listMousemoveHandler));
+selector.list.addEventListener("mouseenter", mouseenterHandler);
+selector.list.addEventListener("mouseleave", mouseleaveHandler);
+selector.listContent
+  .querySelectorAll("li")
+  .forEach((el) => el.addEventListener("mousemove", listMousemoveHandler));
