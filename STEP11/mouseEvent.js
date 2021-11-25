@@ -1,3 +1,9 @@
+const selector = {
+  list: document.querySelector(".list"),
+  listContent: document.querySelector(".list-content"),
+  listChild: listContent.querySelectorAll("li"),
+  result: document.querySelector(".result"),
+};
 const list = document.querySelector(".list");
 const listContent = document.querySelector(".list-content");
 const listChild = listContent.querySelectorAll("li");
