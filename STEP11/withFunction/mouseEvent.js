@@ -41,7 +41,7 @@ const listMousemoveHandler = (event) => {
   const addEventTimer = () => {
     target.addEventListener("mousemove", listMousemoveHandler);
   };
-  setTimeout(addEventTimer, 500);
+  setTimeout(addEventTimer, 2000);
 
   const resultText = target.innerHTML;
   const filterArr = resultArr.filter((e) => typeof e[resultText] === "number");
