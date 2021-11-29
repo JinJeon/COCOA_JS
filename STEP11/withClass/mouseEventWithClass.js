@@ -1,7 +1,7 @@
 class Data {
-  constructor(menuArr, counterArr) {
+  constructor(menuArr) {
     this.menuArr = menuArr;
-    this.counterArr = counterArr;
+    this.counterArr = this.menuArr.map((el) => (el = { [el]: null }));
     this.target;
   }
   countText(text) {
@@ -30,24 +30,29 @@ class Viewer {
     });
     this.list.appendChild(newLists);
   }
-  showLists() {
-    this.list.querySelector("ul").classList.remove("hidden");
-  }
-  hideLists() {
-    this.list.querySelector("ul").classList.add("hidden");
-  }
   getCounter() {
-    const appendedLists = document.createElement("ul");
+    const appendedPart = document.createElement("ul");
     this.Data.counterArr.forEach((el) => {
-      const appendedPart = document.createElement("li");
-      appendedPart.classList.add("hidden");
-      appendedPart.innerHTML = `${Object.keys(el)} : ${Object.values(el)}`;
-      appendedLists.appendChild(appendedPart);
+      const appendedChild = document.createElement("li");
+      appendedChild.classList.add("hidden");
+      appendedChild.innerHTML = `${Object.keys(el)} : ${Object.values(el)}`;
+      appendedPart.appendChild(appendedChild);
     });
-    this.counter.appendChild(appendedLists);
+    this.counter.appendChild(appendedPart);
   }
+
+  showAllParts() {
+    this.list.querySelector("ul").classList.remove("hidden");
+    const counterPart = this.counter.querySelector("ul");
+    if (counterPart) counterPart.classList.remove("hidden");
+  }
+  hideAllParts() {
+    this.list.querySelector("ul").classList.add("hidden");
+    const counterPart = this.counter.querySelector("ul");
+    if (counterPart) counterPart.classList.add("hidden");
+  }
+
   drawCounter() {
-    console.log("AAA");
     this.counter
       .querySelector("ul")
       .querySelectorAll("li")
@@ -55,13 +60,11 @@ class Viewer {
         const targetCounter = this.Data.target;
         const dataName = Object.keys(targetCounter)[0];
         const listName = el.innerHTML.replace(/\s:\s|\d+(?!\:)/g, "");
-        console.log(dataName, listName);
         if (dataName === listName) {
           el.classList.remove("hidden");
           el.innerHTML = `${Object.keys(targetCounter)} : ${Object.values(
             targetCounter
           )}`;
-          console.log(el);
         }
       });
   }
@@ -72,52 +75,44 @@ class EventController {
     this.Data = Data;
     this.Viewer = Viewer;
   }
-
-  counterMousemoveHandler(event) {
-    const target = event.target;
-    target.removeEventListener("mousemove", this.counterMousemoveHandler);
-    const getCounterMousemoveEvent = function () {
-      target.addEventListener("mousemove", this.counterMousemoveHandler);
-    };
-    setTimeout(getCounterMousemoveEvent, 500);
-    this.Data.countText(target.innerHTML);
+  countMousemove(event) {
+    this.Data.countText(event.target.innerHTML);
     this.Viewer.drawCounter();
   }
   mouseenterHandler() {
-    const timer = setTimeout(this.Viewer.showLists.bind(this.Viewer), 1000);
+    const timer = setTimeout(this.Viewer.showAllParts.bind(this.Viewer), 1000);
     const stopTimer = () => {
       clearTimeout(timer);
     };
     this.Viewer.list.addEventListener("mouseleave", stopTimer);
   }
-  getMouseEvent() {
+  showAndHideEvent() {
     const listNode = this.Viewer.list;
     listNode.addEventListener("mouseenter", this.mouseenterHandler.bind(this));
     listNode.addEventListener(
       "mouseleave",
-      this.Viewer.hideLists.bind(this.Viewer)
+      this.Viewer.hideAllParts.bind(this.Viewer)
     );
-    listNode
+  }
+  listMousemoveEvent() {
+    this.Viewer.list
       .querySelector("ul")
       .querySelectorAll("li")
       .forEach((el) => {
-        el.addEventListener(
-          "mousemove",
-          this.counterMousemoveHandler.bind(this)
-        );
+        el.addEventListener("mousemove", this.countMousemove.bind(this));
       });
   }
   getAllLists() {
     this.Viewer.drawList();
     this.Viewer.getCounter();
-    this.getMouseEvent();
+    this.showAndHideEvent();
+    this.listMousemoveEvent();
   }
 }
 
 const menuArr = ["AIR", "BANANA", "COCOA", "DOOR", "EAR", "FONT"];
 const init = () => {
-  const menuArrWithCounter = menuArr.map((el) => (el = { [el]: null }));
-  const counterData = new Data(menuArr, menuArrWithCounter);
+  const counterData = new Data(menuArr);
   const listViewer = new Viewer(counterData);
   const listEventController = new EventController(counterData, listViewer);
   listEventController.getAllLists();
