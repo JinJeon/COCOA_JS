@@ -8,6 +8,9 @@
   --grey1: rgb(173, 171, 171);
   --white1: rgb(255, 244, 224);
 }
+a {
+  all: unset;
+}
 body {
   background-color: var(--green1);
   color: var(--yellow1);
@@ -23,17 +26,21 @@ nav {
   font-size: 50px;
 }
 nav li {
-  vertical-align: text-bottom;
   width: 100px;
   height: 100px;
   margin: 30px;
   border-radius: 50%;
   line-height: 100px;
+  background-color: var(--green1);
 }
-nav ul :hover {
-  background-color: var(--white1);
+.currentIcon {
+  background-color: var(--green3);
+}
+nav a :hover {
   color: var(--green1);
+  background-color: var(--white1);
 }
+
 h1 {
   display: inline-block;
   width: 300px;
@@ -77,8 +84,11 @@ h1 {
   bottom: 1px;
   font-size: 20px;
   color: var(--red1);
+  text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 }
 .module_form {
+  /* display: grid;
+  grid-template-columns: 8fr, 1fr; */
   margin-top: 10px;
   margin-bottom: 10px;
   border: solid 5px var(--yellow1);
@@ -91,9 +101,6 @@ h1 {
   font-size: 15px;
   font-weight: 500;
   vertical-align: auto;
-}
-.module_form input[type="text"] {
-  font-size: 15px;
 }
 .module_form input[type="submit"] {
   border: 0ch;

@@ -16,7 +16,6 @@ class ListData {
     const savedArrInfo = localStorage.getItem(`${this.value}`);
     if (savedArrInfo !== null) {
       const parsedArrInfo = JSON.parse(savedArrInfo);
-      console.log(parsedArrInfo);
     }
   }
 }
@@ -26,22 +25,54 @@ class ListViewer {
     this.ListData = ListData;
     this.callDeleteIcon = this.ListData.deleteIconElement;
     this.warningElement = document.getElementById("warning");
-    this.navItemArr = ["A", "B"];
+    this.navItemArr = [
+      { "list-alt": "ToDo" },
+      { "calendar-alt": "calendar" },
+      { clock: "alarm" },
+    ];
     this.nav = document.querySelector("nav").querySelector("ul");
+  }
+  whatPageIs() {
+    const link = document.URL;
+    const extensionLength = 5;
+    const linkName = link.substring(
+      link.lastIndexOf("/") + 1,
+      link.length - extensionLength
+    );
+    this.navItemArr.forEach((el, index) => {
+      if (linkName === Object.values(el)[0]) {
+        console.log("hi");
+        this.nav
+          .querySelectorAll("a")
+          [index].querySelector("li")
+          .classList.add("currentIcon");
+      }
+    });
+  }
+  makeIcon(figure, element, link = null) {
+    const appendedItem = document.createElement(`${element}`);
+    const icon = document.createElement("i");
+    icon.setAttribute("class", `${figure}`);
+    appendedItem.appendChild(icon);
+    if (link) {
+      const anker = document.createElement("a");
+      anker.setAttribute("href", `./${link}.html`);
+      anker.appendChild(appendedItem);
+      return anker;
+    }
+    return appendedItem;
   }
   getNavigation() {
     this.navItemArr.forEach((el) => {
-      const appendedItem = document.createElement("li");
-      appendedItem.innerHTML = el;
-      this.nav.appendChild(appendedItem);
+      this.nav.appendChild(
+        this.makeIcon(
+          `fas fa-${Object.keys(el)[0]}`,
+          "li",
+          `${Object.values(el)[0]}`
+        )
+      );
     });
-  }
-  makeIcon(figure) {
-    const span = document.createElement("span");
-    const icon = document.createElement("i");
-    icon.setAttribute("class", `${figure}`);
-    span.appendChild(icon);
-    return span;
+    this.whatPageIs();
   }
   getValuePart() {
     const innerValue = this.ListData.formElementInput.value;
@@ -57,8 +88,8 @@ class ListViewer {
   getListPart() {
     const listLi = document.createElement("li");
     listLi.append(
-      this.makeIcon("fas fa-trash"),
-      this.makeIcon("far fa-edit"),
+      this.makeIcon("fas fa-trash", "span"),
+      this.makeIcon("far fa-edit", "span"),
       this.getValuePart(),
       this.getCheckBoxPart()
     );
