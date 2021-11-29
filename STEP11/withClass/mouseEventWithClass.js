@@ -20,7 +20,7 @@ class Viewer {
     this.list = document.querySelector(".list");
     this.counter = document.querySelector(".counter");
   }
-  drawLists() {
+  drawList() {
     const newLists = document.createElement("ul");
     newLists.classList.add("hidden");
     this.Data.menuArr.forEach((el) => {
@@ -36,11 +36,7 @@ class Viewer {
   hideLists() {
     this.list.querySelector("ul").classList.add("hidden");
   }
-  getCounterList() {
-    const counterLists = this.counter.querySelector("ul");
-    if (counterLists) {
-      counterLists.remove();
-    }
+  getCounter() {
     const appendedLists = document.createElement("ul");
     this.Data.counterArr.forEach((el) => {
       const appendedPart = document.createElement("li");
@@ -51,15 +47,21 @@ class Viewer {
     this.counter.appendChild(appendedLists);
   }
   drawCounter() {
+    console.log("AAA");
     this.counter
       .querySelector("ul")
       .querySelectorAll("li")
       .forEach((el) => {
-        const dataName = Object.keys(this.Data.target)[0];
-        const listName = el.innerHTML.replace(/\s:\s\d+/gi, "");
-        console.log(dataName === listName);
+        const targetCounter = this.Data.target;
+        const dataName = Object.keys(targetCounter)[0];
+        const listName = el.innerHTML.replace(/\s:\s|\d+(?!\:)/g, "");
+        console.log(dataName, listName);
         if (dataName === listName) {
           el.classList.remove("hidden");
+          el.innerHTML = `${Object.keys(targetCounter)} : ${Object.values(
+            targetCounter
+          )}`;
+          console.log(el);
         }
       });
   }
@@ -70,6 +72,7 @@ class EventController {
     this.Data = Data;
     this.Viewer = Viewer;
   }
+
   counterMousemoveHandler(event) {
     const target = event.target;
     target.removeEventListener("mousemove", this.counterMousemoveHandler);
@@ -77,7 +80,6 @@ class EventController {
       target.addEventListener("mousemove", this.counterMousemoveHandler);
     };
     setTimeout(getCounterMousemoveEvent, 500);
-    this.Viewer.getCounterList();
     this.Data.countText(target.innerHTML);
     this.Viewer.drawCounter();
   }
@@ -90,7 +92,6 @@ class EventController {
   }
   getMouseEvent() {
     const listNode = this.Viewer.list;
-    this.Viewer.drawLists();
     listNode.addEventListener("mouseenter", this.mouseenterHandler.bind(this));
     listNode.addEventListener(
       "mouseleave",
@@ -106,6 +107,11 @@ class EventController {
         );
       });
   }
+  getAllLists() {
+    this.Viewer.drawList();
+    this.Viewer.getCounter();
+    this.getMouseEvent();
+  }
 }
 
 const menuArr = ["AIR", "BANANA", "COCOA", "DOOR", "EAR", "FONT"];
@@ -114,6 +120,6 @@ const init = () => {
   const counterData = new Data(menuArr, menuArrWithCounter);
   const listViewer = new Viewer(counterData);
   const listEventController = new EventController(counterData, listViewer);
-  listEventController.getMouseEvent();
+  listEventController.getAllLists();
 };
 init();
