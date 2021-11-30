@@ -1,36 +1,45 @@
 class ListData {
   constructor(name) {
     this.name = name;
-    this.titleElement = document.getElementById(`${name}-title`);
-    this.formElement = document.getElementById(`${name}-form`);
-    this.listElement = document.getElementById(`${name}-list`);
-    this.deleteIconElement = document.getElementById(`${name}-delete-icon`);
-    this.formElementInput = this.formElement.querySelector("input");
     this.listArr = [];
-  }
-  setArrInfo() {
-    this.listArr.push({ value: this.formElementInput.value, id: Date.now() });
-    localStorage.setItem(`${this.value}`, JSON.stringify(this.listArr));
-  }
-  getArrInfo() {
-    const savedArrInfo = localStorage.getItem(`${this.value}`);
-    if (savedArrInfo !== null) {
-      const parsedArrInfo = JSON.parse(savedArrInfo);
-    }
   }
 }
 
 class ListViewer {
   constructor(ListData) {
     this.ListData = ListData;
-    this.callDeleteIcon = this.ListData.deleteIconElement;
-    this.warningElement = document.getElementById("warning");
+    this.titleElement = document.getElementById(`${this.ListData.name}-title`);
+    this.formElement = document.getElementById(`${this.ListData.name}-form`);
+    this.listElement = document.getElementById(`${this.ListData.name}-list`);
+    this.deleteIconElement = document.getElementById(
+      `${this.ListData.name}-delete-icon`
+    );
+    this.formElementInput = this.formElement.querySelector("input");
+    this.warningElement = document.querySelector("#warning");
+    this.sumContainer = document.querySelector(".sum_container");
     this.navItemArr = [
       { "list-alt": "ToDo" },
       { "calendar-alt": "calendar" },
       { clock: "alarm" },
     ];
     this.nav = document.querySelector("nav").querySelector("ul");
+  }
+  drawItem(name, title, placeholder) {
+    const item = document.createElement("div");
+    item.classList.add("module_item");
+    item.innerHTML = `
+    <div class="module_container">
+      <span id="${name}-title">${title}</span>
+      <span id="${name}-delete-icon" class="hidden"><i class="fas fa-trash"></i></span>
+    </div>
+    <form id="${name}-form" class="module_form">
+      <input type="text" placeholder="${placeholder}" maxlength=15>
+      <input type="submit" value="+">
+    </form>
+    <ul id="${name}-list">
+    </ul>
+    `;
+    this.sumContainer.appendChild(item);
   }
   whatPageIs() {
     const link = document.URL;
@@ -41,7 +50,6 @@ class ListViewer {
     );
     this.navItemArr.forEach((el, index) => {
       if (linkName === Object.values(el)[0]) {
-        console.log("hi");
         this.nav
           .querySelectorAll("a")
           [index].querySelector("li")
@@ -75,7 +83,7 @@ class ListViewer {
     this.whatPageIs();
   }
   getValuePart() {
-    const innerValue = this.ListData.formElementInput.value;
+    const innerValue = this.formElementInput.value;
     const valuePart = document.createElement("span");
     valuePart.innerText = innerValue;
     return valuePart;
@@ -97,9 +105,8 @@ class ListViewer {
   }
   makeList() {
     const targetLi = this.getListPart();
-    const valueListNode = this.ListData.listElement;
-    valueListNode.appendChild(targetLi);
-    valueListNode.classList.add("module_list");
+    this.listElement.appendChild(targetLi);
+    this.listElement.classList.add("module_list");
     return targetLi;
   }
   // create list
@@ -110,20 +117,19 @@ class ListViewer {
     warningElement.classList.remove("hidden");
   }
   ifAllDelete() {
-    const valueListNode = this.ListData.listElement;
+    const valueListNode = this.listElement;
     if (valueListNode.querySelector("li") === null) {
       valueListNode.classList.remove("module_list");
-      this.callDeleteIcon.classList.add("hidden");
+      this.deleteIconElement.classList.add("hidden");
     }
   }
   getDeleteAllIcon() {
-    this.callDeleteIcon.classList.remove("hidden");
+    this.deleteIconElement.classList.remove("hidden");
   }
   deleteAll() {
-    this.ListData.listElement.querySelectorAll("li").forEach((e) => e.remove());
-    this.ListViewer.ifAllDelete();
-    const warning = document.querySelector("#warning");
-    warning.innerText = `ALL DELETED (${this.ListData.titleElement.innerText})`;
+    this.listElement.querySelectorAll("li").forEach((e) => e.remove());
+    this.ifAllDelete();
+    this.warningElement.innerText = `ALL DELETED (${this.titleElement.innerText})`;
   }
   deleteList(event) {
     const targetLi = event.target.closest("li");
@@ -131,14 +137,13 @@ class ListViewer {
     this.ListViewer.ifAllDelete();
   }
   getEditList() {
-    const warningElement = document.getElementById("warning");
     const targetPart = event.target.closest("li").querySelectorAll("span")[2];
     const targetText = targetPart.innerText;
     if (targetPart.innerHTML.length <= 28) {
       targetPart.innerHTML = `<form><input type="text" placeholder=${targetText} value=${targetText} maxlength=15></form>`;
     }
-    warningElement.innerText = "PRESS ENTER TO FINISH EDITING";
-    warningElement.classList.remove("hidden");
+    this.warningElement.innerText = "PRESS ENTER TO FINISH EDITING";
+    this.warningElement.classList.remove("hidden");
   }
   postEditList(event) {
     event.preventDefault();
@@ -151,11 +156,10 @@ class ListViewer {
     targetBox.classList.toggle("delete");
   }
   isBlank() {
-    const warningElement = document.getElementById("warning");
-    warningElement.classList.add("hidden");
-    if (this.ListData.formElementInput.value !== "") return false;
-    warningElement.innerText = "FILL IN THE BLANK";
-    warningElement.classList.remove("hidden");
+    this.warningElement.classList.add("hidden");
+    if (this.formElementInput.value !== "") return false;
+    this.warningElement.innerText = "FILL IN THE BLANK";
+    this.warningElement.classList.remove("hidden");
     return true;
   }
 }
@@ -167,7 +171,7 @@ class ListController {
     this.ListViewer = ListViewer;
   }
   deleteAllEvent() {
-    const deleteIconNode = this.ListData.deleteIconElement;
+    const deleteIconNode = this.ListViewer.deleteIconElement;
     this.ListViewer.getDeleteAllIcon();
     deleteIconNode.addEventListener(
       "click",
@@ -175,7 +179,7 @@ class ListController {
     );
     deleteIconNode.addEventListener(
       "dblclick",
-      this.ListViewer.deleteAll.bind(this)
+      this.ListViewer.deleteAll.bind(this.ListViewer)
     );
   }
   getEditListEvent(event) {
@@ -183,17 +187,15 @@ class ListController {
     const targetPart = event.target.closest("li").querySelectorAll("span")[2];
     targetPart.addEventListener(
       "submit",
-      this.ListViewer.postEditList.bind(this)
+      this.ListViewer.postEditList.bind(this.ListViewer)
     );
   }
-  inputListEvent(event) {
+  submitListEvent(event) {
     event.preventDefault();
     if (this.ListViewer.isBlank()) return;
     const list = this.ListViewer.makeList();
     const listchild = list.childNodes;
-    this.ListData.setArrInfo();
-    this.ListData.getArrInfo();
-    this.ListData.formElementInput.value = "";
+    this.ListViewer.formElementInput.value = "";
     listchild[0].addEventListener(
       "click",
       this.ListViewer.deleteList.bind(this)
@@ -207,9 +209,9 @@ class ListController {
     this.deleteAllEvent();
   }
   printListEvent() {
-    this.ListData.formElement.addEventListener(
+    this.ListViewer.formElement.addEventListener(
       "submit",
-      this.inputListEvent.bind(this)
+      this.submitListEvent.bind(this)
     );
   }
 }
