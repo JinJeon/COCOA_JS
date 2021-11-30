@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="../CSS/ToDo.css">
-  <title>TO DO LIST</title>
+  <title>LIST</title>
 </head>
 
 <body>
@@ -13,7 +13,7 @@
     </ul>
   </nav>
   <header>
-    <h1>TO DO LIST</h1>
+    <h1>LIST</h1>
     <br>
     <div id="warning" class="warning hidden">
       FILL IN THE BLANK
@@ -22,11 +22,11 @@
   <div class="sum_container">
     <div class="module_item">
       <div class="module_container">
-        <span id="todo-title">DO IT</span>
+        <span id="todo-title">TO DO</span>
         <span id="todo-delete-icon" class="hidden"><i class="fas fa-trash"></i></span>
       </div>
       <form id="todo-form" class="module_form">
-        <input type="text" placeholder="NEW TASK" maxlength=15>
+        <input type="text" placeholder="NEW TASK" maxlength=30>
         <input type="submit" value="+">
       </form>
       <ul id="todo-list">
@@ -34,15 +34,17 @@
     </div>
     <div class="module_item">
       <div class="module_container">
-        <span id="having-title">WANT IT</span>
+        <span id="having-title">TO HAVE</span>
         <span id="having-delete-icon" class="hidden"><i class="fas fa-trash"></i></span>
       </div>
       <form id="having-form" class="module_form">
-        <input type="text" placeholder="NEW ITEM" maxlength=15>
+        <input type="text" placeholder="NEW ITEM" maxlength=30>
         <input type="submit" value="+">
       </form>
       <ul id="having-list">
       </ul>
+    </div>
+    <div>
     </div>
   </div>
 </body>

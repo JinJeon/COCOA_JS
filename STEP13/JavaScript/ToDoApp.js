@@ -43,7 +43,7 @@ class ListViewer {
   }
   whatPageIs() {
     const link = document.URL;
-    const extensionLength = 5;
+    const extensionLength = link.substr(-1) === "l" ? 5 : 6;
     const linkName = link.substring(
       link.lastIndexOf("/") + 1,
       link.length - extensionLength
@@ -222,8 +222,8 @@ const havingViewer = new ListViewer(havingData);
 const todoController = new ListController(todoData, todoViewer);
 const havingController = new ListController(havingData, havingViewer);
 const init = function () {
+  todoViewer.getNavigation();
   todoController.printListEvent();
   havingController.printListEvent();
-  havingViewer.getNavigation();
 };
 init();

@@ -1,4 +1,9 @@
 @import "reset.css";
+@media screen and (max-width: 855px) {
+  nav {
+    display: none;
+  }
+}
 :root {
   --green1: rgb(97, 124, 94);
   --green2: rgb(94, 105, 93);
@@ -19,7 +24,7 @@ body {
   text-align: center;
 }
 nav {
-  width: 150px;
+  width: 130px;
   color: var(--white1);
   position: fixed;
   height: 100%;
@@ -87,8 +92,7 @@ h1 {
   text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 }
 .module_form {
-  /* display: grid;
-  grid-template-columns: 8fr, 1fr; */
+  width: 270px;
   margin-top: 10px;
   margin-bottom: 10px;
   border: solid 5px var(--yellow1);
@@ -97,6 +101,7 @@ h1 {
 }
 .module_form input {
   all: unset;
+  word-break: break-word;
   padding: 10px;
   font-size: 15px;
   font-weight: 500;
@@ -104,6 +109,7 @@ h1 {
 }
 .module_form input[type="submit"] {
   border: 0ch;
+  padding: 15px;
   font-size: 20px;
   font-weight: 800;
   border-left: dashed 3px;
@@ -121,8 +127,8 @@ button {
 }
 .module_list {
   position: relative;
-  font-size: 15px;
-  max-width: 300px;
+  font-size: 20px;
+  width: 250px;
   margin-top: 10px;
   margin-bottom: 10px;
   padding-left: 10px;
@@ -131,9 +137,10 @@ button {
   border-radius: 10px;
 }
 .module_list li {
+  word-break: break-word;
   display: grid;
   grid-template-columns: 1fr 1.5fr 12fr 1fr;
-  column-gap: 1px;
+  column-gap: 2px;
   align-items: center;
   text-align: left;
   margin-top: 10px;
