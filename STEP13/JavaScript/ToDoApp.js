@@ -23,23 +23,7 @@ class ListViewer {
       { clock: "alarm" },
     ];
     this.nav = document.querySelector("nav").querySelector("ul");
-  }
-  drawItem(name, title, placeholder) {
-    const item = document.createElement("div");
-    item.classList.add("module_item");
-    item.innerHTML = `
-    <div class="module_container">
-      <span id="${name}-title">${title}</span>
-      <span id="${name}-delete-icon" class="hidden"><i class="fas fa-trash"></i></span>
-    </div>
-    <form id="${name}-form" class="module_form">
-      <input type="text" placeholder="${placeholder}" maxlength=15>
-      <input type="submit" value="+">
-    </form>
-    <ul id="${name}-list">
-    </ul>
-    `;
-    this.sumContainer.appendChild(item);
+    this.addNewListBtn = document.querySelector(".add_new_list").childNodes[1];
   }
   whatPageIs() {
     const link = document.URL;
@@ -111,7 +95,7 @@ class ListViewer {
   }
   // create list
 
-  noticeWarning() {
+  noticeDblclick() {
     const warningElement = document.getElementById("warning");
     warningElement.innerText = "DOUBLE CLICK ICON TO DELETE ALL";
     warningElement.classList.remove("hidden");
@@ -155,12 +139,48 @@ class ListViewer {
     const targetBox = event.target.closest("li");
     targetBox.classList.toggle("delete");
   }
-  isBlank() {
+  isBlank(submittedContent) {
     this.warningElement.classList.add("hidden");
-    if (this.formElementInput.value !== "") return false;
+    if (submittedContent !== "") return false;
     this.warningElement.innerText = "FILL IN THE BLANK";
     this.warningElement.classList.remove("hidden");
     return true;
+  }
+  showNameInputForm(event) {
+    event.target
+      .closest("div")
+      .querySelector("form")
+      .classList.toggle("hidden");
+  }
+
+  removeAndDrawNewList(event, title) {
+    event.preventDefault();
+    event.target.closest("div").remove();
+    const name = `${title}`.replace(" ", "").toLowerCase();
+    const listItem = document.createElement("div");
+    listItem.classList.add("module_item");
+    listItem.innerHTML = `
+    <div class="module_container">
+      <span id="${name}-title">${title}</span>
+      <span id="${name}-delete-icon" class="hidden"><i class="fas fa-trash"></i></span>
+    </div>
+    <form id="${name}-form" class="module_form">
+      <input type="text" placeholder="TYPE AND PRESS ENTER" maxlength=30>
+      <input type="submit" value="+">
+    </form>
+    <ul id="${name}-list">
+    </ul>
+    `;
+    const btnItem = document.createElement("div");
+    btnItem.classList.add("add_new_list");
+    btnItem.innerHTML = `
+    <span><i class="fas fa-clipboard-list"></i></span>
+    <p>
+    <form class="hidden">
+      <input type="text" placeholder="LIST NAME" maxlength=10>
+    </form>
+    `;
+    this.sumContainer.append(listItem, btnItem);
   }
 }
 // create list performance
@@ -175,7 +195,7 @@ class ListController {
     this.ListViewer.getDeleteAllIcon();
     deleteIconNode.addEventListener(
       "click",
-      this.ListViewer.noticeWarning.bind(this)
+      this.ListViewer.noticeDblclick.bind(this)
     );
     deleteIconNode.addEventListener(
       "dblclick",
@@ -192,7 +212,8 @@ class ListController {
   }
   submitListEvent(event) {
     event.preventDefault();
-    if (this.ListViewer.isBlank()) return;
+    const submittedContent = event.target.querySelector("input").value;
+    if (this.ListViewer.isBlank(submittedContent)) return;
     const list = this.ListViewer.makeList();
     const listchild = list.childNodes;
     this.ListViewer.formElementInput.value = "";
@@ -208,22 +229,47 @@ class ListController {
     this.ListViewer.getDeleteAllIcon();
     this.deleteAllEvent();
   }
-  printListEvent() {
+  getSubmitListEvent() {
     this.ListViewer.formElement.addEventListener(
       "submit",
       this.submitListEvent.bind(this)
     );
   }
+  submitNameInputFromEvent(event) {
+    event.preventDefault();
+    const listTitle = event.target.querySelector("input").value;
+    if (this.ListViewer.isBlank(listTitle)) return;
+    this.ListViewer.removeAndDrawNewList(event, listTitle);
+    const madeData = new ListData(`${listTitle}`);
+    const madeViewer = new ListViewer(madeData);
+    const madeController = new ListController(madeData, madeViewer);
+    madeController.getSubmitListEvent();
+    madeController.getClickEventInAddBtn();
+  }
+  clickAddBtnEvent(event) {
+    this.ListViewer.showNameInputForm(event);
+    const nameInputForm = event.target.closest("div").querySelector("form");
+    nameInputForm.addEventListener(
+      "submit",
+      this.submitNameInputFromEvent.bind(this)
+    );
+  }
+  getClickEventInAddBtn() {
+    const addBtn = document.querySelector(".add_new_list").childNodes[1];
+    console.log(document.querySelector(".add_new_list"));
+    addBtn.addEventListener("click", this.clickAddBtnEvent.bind(this));
+  }
 }
 const todoData = new ListData("todo");
-const havingData = new ListData("having");
+const tohaveData = new ListData("tohave");
 const todoViewer = new ListViewer(todoData);
-const havingViewer = new ListViewer(havingData);
+const tohaveViewer = new ListViewer(tohaveData);
 const todoController = new ListController(todoData, todoViewer);
-const havingController = new ListController(havingData, havingViewer);
+const tohaveController = new ListController(tohaveData, tohaveViewer);
 const init = function () {
   todoViewer.getNavigation();
-  todoController.printListEvent();
-  havingController.printListEvent();
+  todoController.getClickEventInAddBtn();
+  todoController.getSubmitListEvent();
+  tohaveController.getSubmitListEvent();
 };
 init();

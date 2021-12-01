@@ -8,11 +8,11 @@
 </head>
 
 <body>
-  <nav>
-    <ul>
-    </ul>
-  </nav>
   <header>
+    <nav>
+      <ul>
+      </ul>
+    </nav>
     <h1>LIST</h1>
     <br>
     <div id="warning" class="warning hidden">
@@ -26,7 +26,7 @@
         <span id="todo-delete-icon" class="hidden"><i class="fas fa-trash"></i></span>
       </div>
       <form id="todo-form" class="module_form">
-        <input type="text" placeholder="NEW TASK" maxlength=30>
+        <input type="text" placeholder="TYPE AND PRESS ENTER" maxlength=30>
         <input type="submit" value="+">
       </form>
       <ul id="todo-list">
@@ -34,17 +34,22 @@
     </div>
     <div class="module_item">
       <div class="module_container">
-        <span id="having-title">TO HAVE</span>
-        <span id="having-delete-icon" class="hidden"><i class="fas fa-trash"></i></span>
+        <span id="tohave-title">TO HAVE</span>
+        <span id="tohave-delete-icon" class="hidden"><i class="fas fa-trash"></i></span>
       </div>
-      <form id="having-form" class="module_form">
-        <input type="text" placeholder="NEW ITEM" maxlength=30>
+      <form id="tohave-form" class="module_form">
+        <input type="text" placeholder="TYPE AND PRESS ENTER" maxlength=30>
         <input type="submit" value="+">
       </form>
-      <ul id="having-list">
+      <ul id="tohave-list">
       </ul>
     </div>
-    <div>
+    <div class="add_new_list">
+      <span><i class="fas fa-clipboard-list"></i></span>
+      <p>
+      <form class="hidden">
+        <input type="text" placeholder="LIST NAME" maxlength=10>
+      </form>
     </div>
   </div>
 </body>
