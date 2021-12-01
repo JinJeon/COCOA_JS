@@ -47,7 +47,19 @@ class NavigatorViewer {
     return appendedItem;
   }
 }
-
+class Viewer {
+  constructor(Data) {
+    this.Data = Data;
+  }
+  getClock() {
+    const date = new Date();
+    const clock = document.querySelector(".clock");
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const seconds = String(date.getSeconds()).padStart(2, "0");
+    clock.innerText = `${hours}:${minutes}:${seconds}`;
+  }
+}
 class AlarmController {
   constructor(AlarmData, Viewer, NavigatorViewer) {
     this.AlarmData = AlarmData;
@@ -57,13 +69,22 @@ class AlarmController {
   operateNavi() {
     this.NavigatorViewer.getNavigation();
   }
+  operateTime() {
+    this.Viewer.getClock();
+    setInterval(this.Viewer.getClock, 1000);
+  }
 }
 const navigatorViewer = new NavigatorViewer([
   { "list-alt": "ToDo" },
   { "calendar-alt": "calendar" },
   { clock: "alarm" },
 ]);
-const alarmStart = new AlarmController(1, 1, navigatorViewer);
+const timeViewer = new Viewer(1);
+const alarmStart = new AlarmController(1, timeViewer, navigatorViewer);
 // 추후 1,1 수정 필요
-alarmStart.operateNavi();
 // 나중에 operateNavi 파일을 따로 생성
+const init = () => {
+  alarmStart.operateNavi();
+  alarmStart.operateTime();
+};
+init();

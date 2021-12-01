@@ -100,7 +100,7 @@ class Viewer {
   // create list
 
   noticeDblclick() {
-    const warningElement = document.getElementById("warning");
+    const warningElement = document.querySelector(".warning");
     warningElement.innerText = "DOUBLE CLICK ICON TO DELETE ALL";
     warningElement.classList.remove("hidden");
   }
@@ -154,7 +154,9 @@ class Viewer {
   }
   isBlank(submittedContent) {
     this.warningElement.classList.add("hidden");
-    if (submittedContent !== "") return false;
+    if (submittedContent !== "") {
+      return false;
+    }
     this.warningElement.innerText = "FILL IN THE BLANK";
     this.warningElement.classList.remove("hidden");
     return true;
@@ -250,7 +252,9 @@ class ListController {
     const madeData = new ListData(`${listName}`);
     const madeViewer = new Viewer(madeData);
     const madeController = new ListController(madeData, madeViewer);
-    madeController.operateList();
+    const madeForm = document.querySelector(`#${listName}-form`);
+    madeForm.addEventListener("submit", this.submitListEvent.bind(this));
+    this.getClickEventInAddBtn();
   }
   clickAddBtnEvent(event) {
     this.Viewer.showNameInputForm(event);
