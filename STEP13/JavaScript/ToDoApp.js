@@ -1,7 +1,6 @@
 class ListData {
-  constructor(name) {
-    this.name = name;
-    this.listArr = [];
+  constructor() {
+    this.dataArr = [];
   }
 }
 
@@ -53,12 +52,10 @@ class NavigatorViewer {
   }
 }
 
-class ListViewer {
+class Viewer {
   constructor(ListData) {
     this.ListData = ListData;
     this.warningElement = document.querySelector(".warning");
-    this.sumContainer = document.querySelector(".sum_container");
-    this.addNewListBtn = document.querySelector(".add_new_list").childNodes[1];
   }
   makeIcon(figure, element, link = null) {
     const appendedItem = document.createElement(`${element}`);
@@ -134,7 +131,7 @@ class ListViewer {
     const targetForm = event.target.closest("div");
     const targetLi = event.target.closest("li");
     targetLi.remove();
-    this.ListViewer.ifAllDelete(targetForm);
+    this.Viewer.ifAllDelete(targetForm);
   }
   getEditList() {
     const targetPart = event.target.closest("li").querySelectorAll("span")[2];
@@ -172,7 +169,6 @@ class ListViewer {
   removeAndDrawNewList(event, title, name) {
     event.preventDefault();
     event.target.closest("div").remove();
-    console.log();
     const listItem = document.createElement("div");
     listItem.classList.add("module_item");
     listItem.innerHTML = `
@@ -196,59 +192,51 @@ class ListViewer {
       <input type="text" placeholder="LIST NAME" maxlength=10>
     </form>
     `;
-    this.sumContainer.append(listItem, btnItem);
+    const sumContainer = document.querySelector(".sum_container");
+    sumContainer.append(listItem, btnItem);
   }
 }
 // create list performance
 
 class ListController {
-  constructor(ListData, ListViewer) {
+  constructor(ListData, Viewer, NavigatorViewer) {
     this.ListData = ListData;
-    this.ListViewer = ListViewer;
+    this.Viewer = Viewer;
+    this.NavigatorViewer = NavigatorViewer;
   }
   getDeleteAllEvent(item) {
     const deleteIcon = item.querySelector(".delete_icon");
-    deleteIcon.addEventListener(
-      "click",
-      this.ListViewer.noticeDblclick.bind(this)
-    );
+    deleteIcon.addEventListener("click", this.Viewer.noticeDblclick.bind(this));
     deleteIcon.addEventListener(
       "dblclick",
-      this.ListViewer.deleteAll.bind(this.ListViewer)
+      this.Viewer.deleteAll.bind(this.Viewer)
     );
   }
   getEditListEvent(event) {
-    this.ListViewer.getEditList();
+    this.Viewer.getEditList();
     const targetPart = event.target.closest("li").querySelectorAll("span")[2];
     targetPart.addEventListener(
       "submit",
-      this.ListViewer.postEditList.bind(this.ListViewer)
+      this.Viewer.postEditList.bind(this.Viewer)
     );
   }
   submitListEvent(event) {
     event.preventDefault();
     const targetItem = event.target.closest("div");
     const submittedContent = event.target.querySelector("input").value;
-    if (this.ListViewer.isBlank(submittedContent)) return;
-    const list = this.ListViewer.makeList(submittedContent, targetItem);
+    if (this.Viewer.isBlank(submittedContent)) return;
+    const list = this.Viewer.makeList(submittedContent, targetItem);
     const listchild = list.childNodes;
     event.target.querySelector("input").value = "";
-    listchild[0].addEventListener(
-      "click",
-      this.ListViewer.deleteList.bind(this)
-    );
+    listchild[0].addEventListener("click", this.Viewer.deleteList.bind(this));
     listchild[1].addEventListener("click", this.getEditListEvent.bind(this));
-    listchild[3].addEventListener(
-      "click",
-      this.ListViewer.checkList.bind(this)
-    );
-    this.ListViewer.showDeleteAllIcon(targetItem);
+    listchild[3].addEventListener("click", this.Viewer.checkList.bind(this));
+    this.Viewer.showDeleteAllIcon(targetItem);
     this.getDeleteAllEvent(targetItem);
     // event.target은 submit form
   }
   getSubmitListEvent() {
     const targetForm = document.querySelectorAll(".module_form");
-    console.log(targetForm);
     targetForm.forEach((el) => {
       el.addEventListener("submit", this.submitListEvent.bind(this));
     });
@@ -257,16 +245,15 @@ class ListController {
     event.preventDefault();
     const listTitle = event.target.querySelector("input").value;
     const listName = listTitle.replace(" ", "").toLowerCase();
-    if (this.ListViewer.isBlank(listTitle)) return;
-    this.ListViewer.removeAndDrawNewList(event, listTitle, listName);
+    if (this.Viewer.isBlank(listTitle)) return;
+    this.Viewer.removeAndDrawNewList(event, listTitle, listName);
     const madeData = new ListData(`${listName}`);
-    const madeViewer = new ListViewer(madeData);
+    const madeViewer = new Viewer(madeData);
     const madeController = new ListController(madeData, madeViewer);
-    madeController.getSubmitListEvent();
-    madeController.getClickEventInAddBtn();
+    madeController.operateList();
   }
   clickAddBtnEvent(event) {
-    this.ListViewer.showNameInputForm(event);
+    this.Viewer.showNameInputForm(event);
     const nameInputForm = event.target.closest("div").querySelector("form");
     nameInputForm.addEventListener(
       "submit",
@@ -277,24 +264,27 @@ class ListController {
     const addBtn = document.querySelector(".add_new_list").childNodes[1];
     addBtn.addEventListener("click", this.clickAddBtnEvent.bind(this));
   }
+  operateList() {
+    this.getSubmitListEvent();
+    this.getClickEventInAddBtn();
+  }
+  operateNavi() {
+    this.NavigatorViewer.getNavigation();
+  }
 }
 
-const todoData = new ListData("todo");
-const todoViewer = new ListViewer(todoData);
-const todoController = new ListController(todoData, todoViewer);
-// const tohaveData = new ListData("tohave");
-// const tohaveViewer = new ListViewer(tohaveData);
-// const tohaveController = new ListController(tohaveData, tohaveViewer);
-const navigator = new NavigatorViewer([
+const listData = new ListData("todo");
+const navigatorViewer = new NavigatorViewer([
   { "list-alt": "ToDo" },
   { "calendar-alt": "calendar" },
   { clock: "alarm" },
 ]);
+const listViewer = new Viewer(listData);
+const AllController = new ListController(listData, listViewer, navigatorViewer);
 
 const init = function () {
-  navigator.getNavigation();
-  todoController.getSubmitListEvent();
-  todoController.getClickEventInAddBtn();
-  // tohaveController.getSubmitListEvent();
+  AllController.operateList();
+  AllController.operateNavi();
+  // 추후 모든 파일을 최종적으로 여기서 실행. 아직 import, export 작업이 되지 않음.
 };
 init();
