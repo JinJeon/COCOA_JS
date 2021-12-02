@@ -4,10 +4,114 @@
 .clock {
   display: inline-block;
   width: 300px;
-  font-size: 50px;
+  font-size: 30px;
   font-weight: 500;
   border: solid 5px var(--yellow1);
   border-radius: 10px;
   padding: 10px;
-  margin: 20px;
+  margin-bottom: 20px;
+}
+
+.sum_container {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(auto, auto));
+  column-gap: 20px;
+  justify-content: center;
+}
+.module_item {
+  margin-bottom: 20px;
+  padding: 10px;
+  border-radius: 10px;
+  /* background-color: var(--green2); */
+}
+.module_container {
+  position: relative;
+  font-size: 30px;
+  font-weight: 700;
+  align-items: center;
+}
+.module_container span svg {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  font-size: 20px;
+  color: var(--red2);
+  border: none;
+}
+.module_form {
+  width: 270px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: solid 5px var(--yellow1);
+  border-radius: 10px;
+  min-width: 260px;
+}
+.module_form :last-child {
+  border-top: dashed 3px;
+}
+.module_form input {
+  all: unset;
+  word-break: break-word;
+  padding: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  vertical-align: auto;
+}
+.module_form input[type="submit"] {
+  border: 0ch;
+  padding: 15px;
+  font-size: 20px;
+  font-weight: 800;
+  border-left: dashed 3px;
+}
+
+button {
+  border: 0;
+  font-size: 15px;
+  padding: 0%;
+}
+.delete {
+  text-decoration: line-through;
+  text-decoration-thickness: 3px;
+  text-decoration-color: var(--red1);
+}
+.module_list {
+  position: relative;
+  font-size: 20px;
+  width: 250px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border: solid 5px var(--yellow1);
+  border-radius: 10px;
+}
+.module_list li {
+  word-break: break-word;
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 12fr 1fr;
+  column-gap: 2px;
+  align-items: center;
+  text-align: left;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.module_list input[type="checkbox"] {
+  border: solid 2px black;
+}
+.module_list svg {
+  border: unset;
+  color: var(--yellow1);
+  background-color: var(--green1);
+}
+.module_list input[type="text"] {
+  border: unset;
+  border: dotted 2px var(--yellow1);
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--grey1);
+  background-color: var(--green1);
 }
