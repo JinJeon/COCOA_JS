@@ -89,7 +89,7 @@ button {
 .module_list li {
   word-break: break-word;
   display: grid;
-  grid-template-columns: 1fr 1.5fr 12fr 1fr;
+  grid-template-columns: 5fr 12fr 1fr;
   column-gap: 2px;
   align-items: center;
   text-align: left;
