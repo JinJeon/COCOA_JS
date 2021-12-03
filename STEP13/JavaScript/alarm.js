@@ -150,6 +150,14 @@ class Viewer {
     const targetBox = event.target.closest("li");
     targetBox.classList.toggle("delete");
   }
+  getMouseoverIcon(event) {
+    const createdIcons = document.createElement("div");
+    createdIcons.append(
+      this.makeIcon("fas fa-backspace", "span"),
+      this.makeIcon("fas fa-trash-alt", "span")
+    );
+    event.target.innerHTML = "<span>HI</span>";
+  }
 }
 class AlarmController {
   constructor(AlarmData, Viewer, NavigatorViewer) {
@@ -167,7 +175,9 @@ class AlarmController {
       this.Viewer.warningMention("ALREADY SUBMITTED");
       return;
     }
-    const targetValue = targetForm.querySelector("input").value;
+    const targetInputArray = targetForm.querySelectorAll("input");
+    targetInputArray[0].setAttribute("readonly", true);
+    const targetValue = targetInputArray[0].value;
     const timeForm = this.Viewer.getTimeForm();
     targetForm.appendChild(timeForm);
     const timeInput = timeForm.querySelector("input");
@@ -181,6 +191,7 @@ class AlarmController {
     const targetItem = event.target.closest("div"); // module_item
     const targetForm = event.target.parentNode;
     const targetChild = targetForm.childNodes;
+    targetForm.querySelector("input").removeAttribute("readonly");
 
     const targetTime = targetChild[5].querySelector("input").value;
     const hours = targetTime.substr(0, 2);
@@ -195,16 +206,36 @@ class AlarmController {
       this.Viewer.warningMention("SETTING TIME ALREADY PASSED");
       return;
     }
+
     const contentArr = [remainedTime, targetValue];
     const list = this.Viewer.makeList(contentArr, targetItem);
     const listChild = list.childNodes;
     this.Viewer.resetForm(targetForm);
+    const getInterval = () => {
+      const interval = setInterval(() => {
+        const resetTime = this.getRemainedTime(hours, minutes, seconds);
+        listChild[0].innerHTML = resetTime;
+      }, 1000);
+      return interval;
+    };
+    const startInterval = getInterval();
     listChild[2].addEventListener("click", this.Viewer.checkList.bind(this));
-    setInterval(() => {
-      const resetTime = this.getRemainedTime(hours, minutes, seconds);
-      listChild[0].innerHTML = resetTime;
-    }, 1000);
+    listChild[0].addEventListener("mouseover", (event) => {
+      this.mouseoverEvent(event, startInterval, getInterval);
+    });
   }
+
+  mouseoverEvent(event, interval, getInterval) {
+    clearInterval(interval);
+    this.Viewer.getMouseoverIcon(event);
+    event.target.addEventListener("mouseout", (event) => {
+      const restartInterval = getInterval();
+      event.target.addEventListener("mouseover", (event) => {
+        this.mouseoverEvent(event, restartInterval, getInterval);
+      });
+    });
+  }
+
   getRemainedTime(hours, minutes, seconds) {
     const comparedTime = this.compareTime(hours, minutes, seconds);
     if (comparedTime <= 0) return false;
@@ -216,6 +247,7 @@ class AlarmController {
     const remainedTime = `${resultHours}:${resultMinutes}:${resultSeconds}`;
     return remainedTime;
   }
+
   compareTime(hours, minutes, seconds) {
     const currentTime = this.Viewer.getClock();
     const pasttime = new Date(...currentTime);
@@ -230,6 +262,7 @@ class AlarmController {
     const wholeSeconds = (futureTime - pasttime) / 1000;
     return wholeSeconds;
   }
+
   getSubmitContentEvent() {
     const targetForm = document.querySelector(".remain_form");
     targetForm.addEventListener("submit", this.submitContentEvent.bind(this));
