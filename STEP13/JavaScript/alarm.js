@@ -151,12 +151,14 @@ class Viewer {
     targetBox.classList.toggle("delete");
   }
   getMouseoverIcon(event) {
-    const createdIcons = document.createElement("div");
+    const createdIcons = document.createElement("span");
+    createdIcons.classList.add("mouseenterIcon");
     createdIcons.append(
       this.makeIcon("fas fa-backspace", "span"),
       this.makeIcon("fas fa-trash-alt", "span")
     );
-    event.target.innerHTML = "<span>HI</span>";
+    event.target.before(createdIcons);
+    return createdIcons;
   }
 }
 class AlarmController {
@@ -211,26 +213,28 @@ class AlarmController {
     const list = this.Viewer.makeList(contentArr, targetItem);
     const listChild = list.childNodes;
     this.Viewer.resetForm(targetForm);
-    const getInterval = () => {
+    const getInterval = (target) => {
       const interval = setInterval(() => {
         const resetTime = this.getRemainedTime(hours, minutes, seconds);
-        listChild[0].innerHTML = resetTime;
+        target.innerHTML = resetTime;
       }, 1000);
       return interval;
     };
-    const startInterval = getInterval();
+    const startInterval = getInterval(listChild[0]);
     listChild[2].addEventListener("click", this.Viewer.checkList.bind(this));
-    listChild[0].addEventListener("mouseover", (event) => {
+    listChild[0].addEventListener("mouseenter", (event) => {
       this.mouseoverEvent(event, startInterval, getInterval);
     });
   }
 
   mouseoverEvent(event, interval, getInterval) {
+    console.log(event.target);
     clearInterval(interval);
-    this.Viewer.getMouseoverIcon(event);
-    event.target.addEventListener("mouseout", (event) => {
-      const restartInterval = getInterval();
-      event.target.addEventListener("mouseover", (event) => {
+    const newIcons = this.Viewer.getMouseoverIcon(event);
+    event.target.remove();
+    newIcons.addEventListener("mouseleave", (event) => {
+      const restartInterval = getInterval(event.target);
+      event.target.addEventListener("mouseenter", (event) => {
         this.mouseoverEvent(event, restartInterval, getInterval);
       });
     });
