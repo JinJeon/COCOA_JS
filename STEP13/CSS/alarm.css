@@ -116,8 +116,16 @@ button {
   background-color: var(--green1);
 }
 .mouseenterIcon svg {
-  margin-left: 10px;
+  margin-left: 7px;
+  margin-right: 7px;
   font-size: 15px;
   /* display: grid;
   grid-template-rows: 1fr, 1fr; */
+}
+.done {
+  text-align: center;
+  padding: 2px;
+  color: var(--white1);
+  background-color: var(--red2);
+  border-radius: 5px;
 }

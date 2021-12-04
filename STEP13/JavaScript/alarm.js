@@ -32,6 +32,7 @@ class NavigatorViewer {
     });
     this.whatPageIs();
   }
+
   makeIcon(figure, element, link = null) {
     const appendedItem = document.createElement(`${element}`);
     const icon = document.createElement("i");
@@ -200,6 +201,7 @@ class AlarmController {
     const minutes = targetTime.substr(3, 2);
     const seconds = targetTime.substr(6, 2);
     const remainedTime = this.getRemainedTime(hours, minutes, seconds);
+
     if (hours > 24 || minutes > 59 || seconds > 59) {
       this.Viewer.warningMention("WRONG TIME SETTING");
       return;
@@ -208,14 +210,22 @@ class AlarmController {
       this.Viewer.warningMention("SETTING TIME ALREADY PASSED");
       return;
     }
+    // 첫 입력 오류 셋팅
 
     const contentArr = [remainedTime, targetValue];
     const list = this.Viewer.makeList(contentArr, targetItem);
+    // 처음 리스트 생성
+
     const listChild = list.childNodes;
     this.Viewer.resetForm(targetForm);
     const getInterval = (target) => {
       const interval = setInterval(() => {
         const resetTime = this.getRemainedTime(hours, minutes, seconds);
+        if (!resetTime) {
+          target.classList.add("done");
+          target.innerHTML = "DONE";
+          return;
+        }
         target.innerHTML = resetTime;
       }, 1000);
       return interval;
@@ -225,10 +235,10 @@ class AlarmController {
     listChild[0].addEventListener("mouseenter", (event) => {
       this.mouseoverEvent(event, startInterval, getInterval);
     });
+    // 요소에 이벤트 삽입
   }
 
   mouseoverEvent(event, interval, getInterval) {
-    console.log(event.target);
     clearInterval(interval);
     const newIcons = this.Viewer.getMouseoverIcon(event);
     event.target.remove();

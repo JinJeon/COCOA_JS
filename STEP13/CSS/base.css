@@ -1,7 +1,8 @@
-@media screen and (max-width: 950px) {
+@media screen and (max-width: 900px) {
   nav {
     all: unset;
     display: contents;
+    position: fixed;
   }
   nav ul {
     list-style: none;
