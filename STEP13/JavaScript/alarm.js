@@ -172,6 +172,9 @@ class Viewer {
     targetPart.remove();
     if (!targetList.querySelector("li")) targetList.classList.add("hidden");
   }
+  makeWarningHidden() {
+    document.querySelector(".warning").classList.add("hidden");
+  }
 }
 
 class AlarmController {
@@ -201,6 +204,7 @@ class AlarmController {
     timeForm.addEventListener("submit", (event) =>
       this.submitTimeEvent(event, targetValue)
     );
+    this.Viewer.makeWarningHidden();
   }
 
   submitTimeEvent(event, targetValue) {
@@ -221,6 +225,7 @@ class AlarmController {
     listChild[0].addEventListener("mouseenter", (event) => {
       this.mouseenterEvent(event, startInterval, ...filteredTime[1]);
     });
+    this.Viewer.makeWarningHidden();
     // 요소에 이벤트 삽입
   }
 
@@ -289,6 +294,7 @@ class AlarmController {
     // 처음 수정 시부터 보이도록
     targetNode.before(newTimePart);
     targetNode.remove();
+    this.Viewer.makeWarningHidden();
   }
 
   filterRemainedTime(event) {
@@ -350,7 +356,6 @@ class AlarmController {
 }
 const navigatorViewer = new NavigatorViewer([
   { "list-alt": "ToDo" },
-  { "calendar-alt": "calendar" },
   { clock: "alarm" },
 ]);
 const timeViewer = new Viewer(1);

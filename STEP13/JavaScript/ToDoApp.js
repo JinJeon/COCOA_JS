@@ -280,7 +280,6 @@ class ListController {
 const listData = new ListData("todo");
 const navigatorViewer = new NavigatorViewer([
   { "list-alt": "ToDo" },
-  { "calendar-alt": "calendar" },
   { clock: "alarm" },
 ]);
 const listViewer = new Viewer(listData);
