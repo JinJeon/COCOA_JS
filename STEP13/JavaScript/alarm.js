@@ -126,23 +126,24 @@ class Viewer {
     checkBox.setAttribute("type", "checkbox");
     return checkBox;
   }
-  getList(contentArr) {
+  getList(filterdTime, targetValue) {
     const listLi = document.createElement("li");
     listLi.append(
-      this.getValuePart(contentArr[0]),
-      this.getValuePart(contentArr[1]),
+      this.getValuePart(filterdTime),
+      this.getValuePart(targetValue),
       this.getCheckBoxPart()
     );
     return listLi;
   }
-  makeList(contentArr, item) {
-    const targetLi = this.getList(contentArr);
+  makeList(remainedTime, targetValue, item) {
+    const targetLi = this.getList(remainedTime, targetValue);
     const targetNote = item.querySelector("ul");
     targetNote.appendChild(targetLi);
     targetNote.classList.remove("hidden");
     return targetLi;
   }
   resetForm(targetForm) {
+    console.log(targetForm);
     const targetChild = targetForm.childNodes;
     targetChild[5].remove();
     targetChild[1].value = "";
@@ -161,6 +162,10 @@ class Viewer {
     event.target.before(createdIcons);
     return createdIcons;
   }
+  showTimeDone(target) {
+    target.classList.add("done");
+    target.innerHTML = "DONE";
+  }
 }
 class AlarmController {
   constructor(AlarmData, Viewer, NavigatorViewer) {
@@ -168,6 +173,7 @@ class AlarmController {
     this.Viewer = Viewer;
     this.NavigatorViewer = NavigatorViewer;
   }
+
   submitContentEvent(event) {
     // event.target은 module_form
     event.preventDefault();
@@ -175,7 +181,7 @@ class AlarmController {
     const LIMITEDINPUT = 4;
     const formInputLength = targetForm.querySelectorAll("input").length;
     if (formInputLength >= LIMITEDINPUT) {
-      this.Viewer.warningMention("ALREADY SUBMITTED");
+      this.Viewer.warningMention("MENTION ALREADY SUBMITTED");
       return;
     }
     const targetInputArray = targetForm.querySelectorAll("input");
@@ -189,65 +195,107 @@ class AlarmController {
       this.submitTimeEvent(event, targetValue)
     );
   }
+
   submitTimeEvent(event, targetValue) {
     event.preventDefault();
     const targetItem = event.target.closest("div"); // module_item
     const targetForm = event.target.parentNode;
-    const targetChild = targetForm.childNodes;
     targetForm.querySelector("input").removeAttribute("readonly");
-
-    const targetTime = targetChild[5].querySelector("input").value;
-    const hours = targetTime.substr(0, 2);
-    const minutes = targetTime.substr(3, 2);
-    const seconds = targetTime.substr(6, 2);
-    const remainedTime = this.getRemainedTime(hours, minutes, seconds);
-
-    if (hours > 24 || minutes > 59 || seconds > 59) {
-      this.Viewer.warningMention("WRONG TIME SETTING");
-      return;
-    }
-    if (!remainedTime) {
-      this.Viewer.warningMention("SETTING TIME ALREADY PASSED");
-      return;
-    }
-    // 첫 입력 오류 셋팅
-
-    const contentArr = [remainedTime, targetValue];
-    const list = this.Viewer.makeList(contentArr, targetItem);
+    const filteredTime = this.filterRemainedTime(event);
+    const remainedTime = filteredTime[0];
+    if (!filteredTime) return;
+    const list = this.Viewer.makeList(remainedTime, targetValue, targetItem);
     // 처음 리스트 생성
 
     const listChild = list.childNodes;
     this.Viewer.resetForm(targetForm);
-    const getInterval = (target) => {
-      const interval = setInterval(() => {
-        const resetTime = this.getRemainedTime(hours, minutes, seconds);
-        if (!resetTime) {
-          target.classList.add("done");
-          target.innerHTML = "DONE";
-          return;
-        }
-        target.innerHTML = resetTime;
-      }, 1000);
-      return interval;
-    };
-    const startInterval = getInterval(listChild[0]);
+    const startInterval = this.getInterval(listChild[0], ...filteredTime[1]);
     listChild[2].addEventListener("click", this.Viewer.checkList.bind(this));
     listChild[0].addEventListener("mouseenter", (event) => {
-      this.mouseoverEvent(event, startInterval, getInterval);
+      this.mouseenterEvent(event, startInterval, ...filteredTime[1]);
     });
     // 요소에 이벤트 삽입
   }
 
-  mouseoverEvent(event, interval, getInterval) {
+  getInterval(target, hours, minutes, seconds) {
+    const interval = setInterval(() => {
+      const resetTime = this.getRemainedTime(hours, minutes, seconds);
+      if (!resetTime) {
+        this.Viewer.showTimeDone(target);
+        return;
+      }
+      target.innerHTML = resetTime;
+    }, 1000);
+    return interval;
+  }
+
+  mouseenterEvent(event, interval, hours, minutes, seconds) {
     clearInterval(interval);
     const newIcons = this.Viewer.getMouseoverIcon(event);
+    const newIconsChild = newIcons.childNodes;
     event.target.remove();
     newIcons.addEventListener("mouseleave", (event) => {
-      const restartInterval = getInterval(event.target);
+      const restartInterval = this.getInterval(
+        event.target,
+        hours,
+        minutes,
+        seconds
+      );
       event.target.addEventListener("mouseenter", (event) => {
-        this.mouseoverEvent(event, restartInterval, getInterval);
+        this.mouseenterEvent(event, restartInterval, hours, minutes, seconds);
       });
     });
+    newIconsChild[0].addEventListener("click", (event) => {
+      this.changeRemainedTime(event);
+    });
+  }
+
+  changeRemainedTime(event) {
+    const editedPart = event.target.closest(".mouseenterIcon");
+    editedPart.innerHTML = `
+        <form>
+          <input type="text" placeholder="00:00:00" maxlength=8>
+        </form>
+      `;
+    const editedForm = editedPart.querySelector("form");
+    const editedInput = editedForm.querySelector("input");
+    editedInput.addEventListener("keyup", this.Viewer.getTimeType);
+    editedForm.addEventListener("submit", (event) => {
+      this.submitEditedTimeEvent(event);
+    });
+  }
+  submitEditedTimeEvent(event) {
+    event.preventDefault();
+    const filteredTime = this.filterRemainedTime(event);
+    if (!filteredTime) return;
+    const newTimePart = document.createElement("span");
+    const startInterval = this.getInterval(newTimePart, ...filteredTime[1]);
+    newTimePart.addEventListener("mouseenter", (event) => {
+      this.mouseenterEvent(event, startInterval, ...filteredTime[1]);
+    });
+    const targetNode = event.target.parentNode;
+    newTimePart.innerText = filteredTime[0];
+    // 처음 수정 시부터 보이도록
+    targetNode.before(newTimePart);
+    targetNode.remove();
+  }
+
+  filterRemainedTime(event) {
+    const editedTime = event.target.querySelector("input").value;
+    const hours = editedTime.substr(0, 2);
+    const minutes = editedTime.substr(3, 2);
+    const seconds = editedTime.substr(6, 2);
+    const remainedTime = this.getRemainedTime(hours, minutes, seconds);
+
+    if (hours > 23 || minutes > 59 || seconds > 59) {
+      this.Viewer.warningMention("WRONG TIME SETTING");
+      return false;
+    }
+    if (!remainedTime) {
+      this.Viewer.warningMention("SETTING TIME ALREADY PASSED");
+      return false;
+    }
+    return [remainedTime, [hours, minutes, seconds]];
   }
 
   getRemainedTime(hours, minutes, seconds) {
