@@ -166,7 +166,14 @@ class Viewer {
     target.classList.add("done");
     target.innerHTML = "DONE";
   }
+  removePart(event) {
+    const targetPart = event.target.closest("li");
+    const targetList = event.target.closest("ul");
+    targetPart.remove();
+    if (!targetList.querySelector("li")) targetList.classList.add("hidden");
+  }
 }
+
 class AlarmController {
   constructor(AlarmData, Viewer, NavigatorViewer) {
     this.AlarmData = AlarmData;
@@ -248,6 +255,9 @@ class AlarmController {
     newIconsChild[0].addEventListener("click", (event) => {
       this.changeRemainedTime(event);
     });
+    newIconsChild[1].addEventListener("click", (event) => {
+      this.Viewer.removePart(event);
+    });
   }
 
   changeRemainedTime(event) {
@@ -264,6 +274,7 @@ class AlarmController {
       this.submitEditedTimeEvent(event);
     });
   }
+
   submitEditedTimeEvent(event) {
     event.preventDefault();
     const filteredTime = this.filterRemainedTime(event);
