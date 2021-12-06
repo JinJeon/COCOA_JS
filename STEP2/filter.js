@@ -9,8 +9,9 @@ const filterWord = (word) => {
 // 1. for/while
 const filterId1 = (arr) => {
   const filterArr1 = [];
-  for (i = 0; i < arr.length; i++) {
+  for (let i = 0; i < arr.length; i++) {
     if (!filterWord(arr[i])) {
+      console.log(filterWord(arr[i]));
       filterArr1.push(arr[i].replace(/[0-9]/g, ""));
     }
   }
